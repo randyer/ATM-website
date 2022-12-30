@@ -13,11 +13,11 @@
 
 .layer-1{
   background-color:#9d71b3;
-  background-image: url('/spacer/wave1.svg');
+  background-image: url('spacer/wave1.svg');
 }
 .layer-2{
   background-color: black;
-  background-image: url('/spacer/wave2.svg'); 
+  background-image: url('spacer/wave2.svg'); 
 }
 
 .expectations h2{
