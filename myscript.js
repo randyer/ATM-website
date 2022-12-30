@@ -1,3 +1,5 @@
+window.onload=function(){
+
 const modal = document.querySelector('.modal');
 const openModal = document.querySelector('.open-button');
 const closeModal = document.querySelector('.close-button');
@@ -31,3 +33,5 @@ navToggle.addEventListener('click', () => {
 window.onbeforeunload = function () {
   window.scrollTo(0, 0);
 }; 
+  
+}
