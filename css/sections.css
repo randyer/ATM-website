@@ -1,0 +1,398 @@
+/* @media screen and (max-width: 50em){ */
+.spacer{
+  aspect-ratio: 900/200;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position:center;
+  background-size: cover;
+  font-size: 0;
+  border: none;
+  outline: none;
+  opacity: 0.999;
+}
+
+.layer-1{
+  background-color:#9d71b3;
+  background-image: url('/spacer/wave1.svg');
+}
+.layer-2{
+  background-color: black;
+  background-image: url('/spacer/wave2.svg'); 
+}
+
+.expectations h2{
+  padding: 1.5em 1.25em 1.5em;
+}
+/* } */
+
+/* ==================
+=======Header======== 
+=====================*/
+
+.primary-header{
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+}
+
+.flex{
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  gap: 2rem;
+}
+
+.primary-navigation{
+  list-style: none;
+  /* background: rgba(0, 0, 0, 0.9); */
+  background: rgba(127, 85, 196, 0.4);
+  backdrop-filter: blur(0.6rem);
+}
+
+.mobile-nav-toggle{
+  display: none;
+}
+
+.primary-navigation a{
+  font-size: 1.4rem;
+  text-decoration: none;
+  color: white;
+}
+
+.primary-navigation a > span {
+  font-weight: 700;
+  margin-block-end: 0.5em;
+}
+
+@media screen and (max-width: 65em){
+  .primary-navigation{
+    position: fixed;
+    z-index: 1000;
+    inset: 0 0 0 60%;
+    flex-direction: column;
+    padding: 10rem 2rem;
+    transform: translateX(100%);
+    transition: transform 350ms ease-out;
+    background: rgba(0, 0, 0, 0.9);
+
+  }
+
+  .primary-navigation[data-visible = "true"]{
+    transform: translateX(0%);
+  }
+
+  .mobile-nav-toggle{
+    position: absolute;
+    display: block;
+    z-index: 9999;
+    background-image: url('/pictures/icon-hamburger.svg');
+    background-color: transparent;
+    width: 2rem;
+    background-repeat: no-repeat;
+    border: 0;
+    aspect-ratio: 1;
+    top: 2rem;
+    right: 2rem;
+  }
+
+  .mobile-nav-toggle[aria-expanded="true"]{
+    background-image: url("/pictures/icon-close.svg");
+  }
+
+}
+
+
+/* ====================
+=======Sections======== 
+=====================*/
+
+.prices{
+  color: #9d71b3;
+}
+@media screen and (min-width: 50rem){
+.prices{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+}
+
+.services{
+  display: flex;
+  flex-direction: column;
+  background-color: black;
+  color: white;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  padding-top: 4em;
+}
+
+.services-layout{
+  background-color: black;
+  color: white;
+  min-height: 60vh;
+  text-align: center;
+  justify-content: center;
+}
+
+@media screen and (min-width: 50rem){
+  .services-layout{
+  display: grid;
+  grid-template-columns: repeat(2,50%);
+  gap: 20px;
+  justify-content: center;
+  }
+}
+
+.services-layout img{
+  display: block;
+  margin: auto;
+  height: 4em;
+  text-align: center;
+  padding-bottom: 1em;
+}
+
+.available-treatments{
+  padding-bottom: 3em;
+}
+
+.services h2{
+  padding-bottom: 1em;
+}
+@media screen and (min-width: 50rem){
+  .services h2{
+    padding: 0;
+  }
+}
+
+.services h3{
+  padding: 0.4em;
+  font-size: 1.3rem;
+}
+@media screen and (min-width: 50rem){
+  .services h3{
+    font-size: 1.5rem;
+  }
+}
+
+.expectations{
+  display: flex;
+  flex-direction: column;
+  background-color: #9d71b3;
+  color: black;
+  min-height: 60vh;
+  font-size: 1.25rem;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1em;
+}
+
+.expectations h2 {
+  padding: 0em 1.25em 1.5em;
+}
+
+.expectations p {
+  padding: 1em;
+}
+
+.expectations img{
+  width: 3em;
+}
+
+@media screen and (min-width: 50rem){
+  .expectations img{
+  width: 5em;
+  margin: 1em;
+  }
+}
+
+.reviews{
+  display: flex;
+  flex-direction: column;
+  min-height: 10em;
+  background-color: black;
+  color: white;
+  font-size: 1.125rem;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  padding-bottom: 2rem;
+
+}
+
+.reviews h2{
+  padding-bottom: 0.5em;
+  color: #dddd91;
+}
+@media screen and (min-width: 50rem){
+  .reviews h2{
+    padding-bottom: 1em;
+  }
+}
+
+.reviews p{
+  padding:  1em 0.75em;
+  color:#dddd91;
+  font-family: 'Merriweather';
+}
+
+.review-box{
+  border: 1px solid #dddd91;
+  border-radius: 0.55rem;
+  margin: 0em 2rem 1em;
+}
+.review-grid{
+}
+@media screen and (min-width: 50rem){
+  .review-grid{
+  display: grid;
+  grid-template-columns: repeat(2,50%);
+  gap: 2.5rem;
+  justify-content: center;
+  }
+  .review-box{
+    max-width: 25rem;
+    border: 0;
+}
+}
+
+.contact{
+  display: flex;
+  flex-direction: column;
+  min-height: 10em;
+  background-color: black;
+  color: white;
+  font-size: 1.125rem;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.contact a{
+  color: white;
+  padding: 1.5em 1.5em;
+
+}
+
+.contact img{
+  width: 14em;
+  border-radius: 2em;
+  padding: 1em;
+}
+
+.phone-contact{
+  padding: 1em;
+}
+.phone-contact::after{
+  content: 'Text message is the best and fastest way to reach me';
+  color: #9d71b3;
+
+}
+
+
+.about{
+  display: flex;
+  flex-direction: column;
+  background-color: #9d71b3;
+  color: black;
+  min-height: 60vh;
+  text-align: center;
+  align-items: center;
+}
+ .about img{
+  width: 12rem;
+  border-radius: 12rem;
+  padding: 1.5em;
+ }
+ @media screen and (min-width: 50rem){
+  .about img{
+    width: 16rem;
+    border-radius: 16rem;
+    padding: 2em;
+   }
+  
+ }
+
+.open-button{
+  padding: 0.7em 1em;
+  color:#9d71b3;
+  background-color: black;
+  border: none;
+  border: none;
+  border-radius: 3px;
+  transition: all 0.5s;
+  font-size: 1rem;
+}
+
+.open-button:hover{
+  background-color:#2e2334;
+  cursor: pointer;
+}
+@media screen and (min-width: 50rem){
+  .open-button{
+    font-size: 1.3rem;
+  }
+
+}
+
+.close-button{
+  position:absolute;
+  top: 0px;
+  right: 0px;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  display: block;
+}
+.close-button:hover{
+  cursor: pointer;
+}
+.close-button img{
+  width: 40px;
+  padding: 0;
+  transform: rotate(180deg);
+}
+
+.modal{
+  background-color: black;
+  color: aliceblue;
+  border: none;
+  max-width: 80vw;
+  max-height: 90vh;
+  border-radius: 0.5rem;
+  transition: all 0.5s;
+  padding: 12px 22px 22px;
+}
+
+.modal p, .modal a {
+  font-size: 1rem;
+  margin: 1.1em 0em 0em;
+  padding: 0;
+  color: #9d71b3;
+} 
+
+.modal li{
+  padding-top: 0.4em;
+  list-style-position: inside;
+}
+
+@media screen and (min-width: 50rem){
+  .modal li{
+    list-style: none;
+  }
+  .modal p,.modal li, .modal a{
+    font-size: 1.4rem;
+  }
+  .modal img{
+    width: 50px;
+  }
+}
+
+.modal::backdrop{
+  background: rgb(0 0 0 /0.4);
+}
+

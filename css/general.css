@@ -1,0 +1,170 @@
+html{
+  height: 100%;
+  overflow: hidden;
+}
+
+
+body{
+  perspective: 1px;
+  transform-style: preserve-3d;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+body,
+h1,h2,h3,li,ul{
+  margin: 0;
+  padding: 0;
+  font-family: 'Lato', Arial, Helvetica, sans-serif;
+}
+p{
+  font-family: 'karla', Arial, Helvetica, sans-serif;
+  padding: 1em 2em;
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.4em;
+}
+h2{
+  font-size: 1.5rem;
+}
+
+h3{
+  font-size: 1.2rem;
+}
+@media screen and (min-width: 50rem){
+  h2{
+    font-size: 3rem;
+  }
+  h3{
+    font-size: 2rem;
+  }
+  p{
+    font-size: 1.6rem;
+    padding: 1em 3.5em;
+    line-height: 1.4em;
+  }
+  a{
+    font-size: 1.6rem;
+  }
+}
+
+header{   
+  min-height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10rem;
+  background-color: none;
+  background-position: center;
+  background-size: cover;
+  color: white;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  position: relative;
+  transform-style: inherit;
+  z-index: -1;
+}
+
+header, header:before {
+  background: 50% 50% / cover;
+  z-index: -1;
+}
+
+header::before{
+  bottom: 0;
+  content: "";
+  inset: 0;
+  position: absolute;
+  display: block;
+  background-image:linear-gradient(rgba(0, 0, 0, 0.40), rgba(0, 0, 0, 0.60)), url('/pictures/orchid-black.jpg');
+  background-size: cover;
+  transform-origin: center center 0 ;
+  transform: translateZ(-1px) scale(2);
+  z-index: 0;
+  min-height: 100vh;
+}
+
+header h1{
+  font-size: 1.6em;
+  padding-bottom: 1.2em;
+  transform-origin: center center 0 ;
+  transform: translateZ(-0.4px) scale(2);
+}
+
+header h2{
+  font-size: 1.1rem;
+  padding-bottom: 2.8em;
+  transform-origin: center center 0 ;
+  transform: translateZ(-0.44px) scale(2);
+}
+@media screen and (min-width: 50rem){
+
+  header h1{
+    font-size: 3rem;
+    padding-bottom: 0.8em;
+  }
+  header h2{
+    font-size: 1.6rem;
+    padding-bottom: 1.2em;
+    line-height: 1.4em;
+  }
+}
+
+header p{
+  position: absolute;
+  font-family: 'Lato';
+  font-size: 1.4rem;
+  padding: 15px;
+  top: 10px;
+  left: 10px;
+}
+
+header nav{
+  position: absolute;
+  top: 10px;
+  right: 0px;
+}
+
+header ul{
+  padding: 15px;
+}
+
+img{
+Max-width: 100%;
+} 
+
+.split{
+Display: flex;
+}
+.split > * {
+	Flex-basis: 100%;
+}
+
+@media screen and (max-width: 50rem) {
+  .split{
+    Flex-direction: column;
+  }
+}
+
+footer{
+  background-color: #9d71b3;
+  padding-top: 80px;
+}
+
+
+footer p{
+  font-size: 0.6rem;
+  display: block;
+  padding: 0;
+  line-height: 10px;
+  color: #9168a6;
+}
+footer a{
+
+  color:#9168a6;
+}
+ 
+
