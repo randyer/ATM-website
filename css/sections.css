@@ -85,7 +85,7 @@
     position: absolute;
     display: block;
     z-index: 9999;
-    background-image: url('/pictures/icon-hamburger.svg');
+    background-image: url('pictures/icon-hamburger.svg');
     background-color: transparent;
     width: 2rem;
     background-repeat: no-repeat;
@@ -96,7 +96,7 @@
   }
 
   .mobile-nav-toggle[aria-expanded="true"]{
-    background-image: url("/pictures/icon-close.svg");
+    background-image: url("pictures/icon-close.svg");
   }
 
 }
