@@ -79,7 +79,7 @@ header::before{
   inset: 0;
   position: absolute;
   display: block;
-  background-image:linear-gradient(rgba(0, 0, 0, 0.40), rgba(0, 0, 0, 0.60)), url('/pictures/orchid-black.jpg');
+  background-image:linear-gradient(rgba(0, 0, 0, 0.40), rgba(0, 0, 0, 0.60)), url('pictures/orchid-black.jpg');
   background-size: cover;
   transform-origin: center center 0 ;
   transform: translateZ(-1px) scale(2);
