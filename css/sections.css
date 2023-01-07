@@ -278,7 +278,13 @@
 
 }
 
-.contact img{
+.building-space-photos{
+  width: 90%;
+  border-radius: 2em;
+  padding: 1em;
+}
+
+.logo-flower{
   width: 14em;
   border-radius: 2em;
   padding: 1em;
@@ -290,7 +296,6 @@
 .phone-contact::after{
   content: 'Text message is the best and fastest way to reach me';
   color: #9d71b3;
-
 }
 
 
