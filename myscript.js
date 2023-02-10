@@ -1,4 +1,5 @@
 // window.onload=function(){
+//
 
 const modal = document.querySelector('.modal');
 const openModal = document.querySelector('.open-button');
