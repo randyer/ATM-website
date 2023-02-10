@@ -1,4 +1,4 @@
-window.onload=function(){
+// window.onload=function(){
 
 const modal = document.querySelector('.modal');
 const openModal = document.querySelector('.open-button');
@@ -11,7 +11,6 @@ openModal.addEventListener('click', function() {
 closeModal.addEventListener('click', function() {
   modal.close();
 })
-
 
 const primaryNav = document.querySelector(".primary-navigation");
 const navToggle = document.querySelector(".mobile-nav-toggle");
