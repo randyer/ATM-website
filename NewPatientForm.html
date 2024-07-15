@@ -22,6 +22,9 @@
       h1 {
         text-align: center;
       }
+      h2 {
+        margin-top: 30px;
+      }
       label {
         display: block;
         margin-top: 10px;
@@ -34,7 +37,7 @@
         margin-top: 5px;
         border: 1px solid #ccc;
         border-radius: 4px;
-        box-sizing: border-box; /* Added to ensure padding does not extend beyond container */
+        box-sizing: border-box;
       }
       textarea {
         resize: vertical;
@@ -55,13 +58,30 @@
       }
       .checkbox-group {
         display: flex;
-        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .checkbox-group label {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+        white-space: nowrap; /* Prevents text from stacking vertically */
+        flex: 0 1 auto; /* Take up only as much space as needed */
+      }
+
+      .checkbox-group input {
+        margin-right: 10px;
       }
       .hidden {
         display: none;
       }
       .form-field {
-        padding: 5px 0; /* Added padding for form fields */
+        padding: 5px 0;
+      }
+      .section-divider {
+        border-top: 1px solid #ccc;
+        margin: 20px 0;
       }
       .waiver {
         margin-top: 20px;
@@ -83,6 +103,25 @@
           otherReferral.classList.remove("hidden");
         } else {
           otherReferral.classList.add("hidden");
+        }
+      }
+      function toggleNotes(checkbox, notesId) {
+        var notes = document.getElementById(notesId);
+        if (checkbox.checked) {
+          notes.classList.remove("hidden");
+        } else {
+          notes.classList.add("hidden");
+        }
+      }
+
+      function toggleOtherNotes(checkbox) {
+        var otherNotes = checkbox
+          .closest(".form-field")
+          .querySelector(".other-notes");
+        if (checkbox.checked) {
+          otherNotes.classList.remove("hidden");
+        } else {
+          otherNotes.classList.add("hidden");
         }
       }
     </script>
@@ -117,8 +156,28 @@
         </div>
 
         <div class="form-field">
-          <label for="address">Address:</label>
-          <input type="text" id="address" name="address" required />
+          <label for="street_address">Street Address:</label>
+          <input
+            type="text"
+            id="street_address"
+            name="street_address"
+            required
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="city">City:</label>
+          <input type="text" id="city" name="city" required />
+        </div>
+
+        <div class="form-field">
+          <label for="state">State:</label>
+          <input type="text" id="state" name="state" required />
+        </div>
+
+        <div class="form-field">
+          <label for="zip">Zip Code:</label>
+          <input type="text" id="zip" name="zip" required />
         </div>
 
         <div class="form-field">
@@ -162,50 +221,79 @@
           />
         </div>
 
+        <div class="section-divider"></div>
+
         <div class="form-field">
-          <label for="symptoms">Symptoms/Health History:</label>
+          <label for="current_symptoms">Current Symptoms/Health History:</label>
           <div class="checkbox-group">
             <label
-              ><input type="checkbox" name="symptoms" value="headache" />
+              ><input
+                type="checkbox"
+                name="current_symptoms"
+                value="headache"
+              />
               Headache</label
             >
             <label
-              ><input type="checkbox" name="symptoms" value="back_pain" /> Back
-              Pain</label
+              ><input
+                type="checkbox"
+                name="current_symptoms"
+                value="back_pain"
+              />
+              Back Pain</label
             >
             <label
-              ><input type="checkbox" name="symptoms" value="neck_pain" /> Neck
-              Pain</label
+              ><input
+                type="checkbox"
+                name="current_symptoms"
+                value="neck_pain"
+              />
+              Neck Pain</label
             >
             <label
-              ><input type="checkbox" name="symptoms" value="shoulder_pain" />
+              ><input
+                type="checkbox"
+                name="current_symptoms"
+                value="shoulder_pain"
+              />
               Shoulder Pain</label
             >
             <label
               ><input
                 type="checkbox"
-                name="symptoms"
+                name="current_symptoms"
+                value="jaw_pain"
+              />
+              Jaw Pain</label
+            >
+            <label
+              ><input
+                type="checkbox"
+                name="current_symptoms"
                 value="muscle_stiffness"
               />
               Muscle Stiffness</label
             >
             <label
-              ><input type="checkbox" name="symptoms" value="joint_pain" />
+              ><input
+                type="checkbox"
+                name="current_symptoms"
+                value="joint_pain"
+              />
               Joint Pain</label
             >
             <label
-              ><input type="checkbox" name="symptoms" value="fatigue" />
+              ><input type="checkbox" name="current_symptoms" value="fatigue" />
               Fatigue</label
             >
             <label
-              ><input type="checkbox" name="symptoms" value="stress" />
+              ><input type="checkbox" name="current_symptoms" value="stress" />
               Stress</label
             >
-
             <label
               ><input
                 type="checkbox"
-                name="symptoms"
+                name="current_symptoms"
                 value="other"
                 onclick="toggleOtherNotes(this)"
               />
@@ -214,35 +302,141 @@
           </div>
           <textarea
             id="otherNotes"
-            name="other_notes"
-            class="hidden"
+            name="current_other_notes"
+            class="hidden other-notes"
             placeholder="Please specify other symptoms"
             style="margin-top: 10px"
           ></textarea>
         </div>
 
-        <script>
-          function toggleOtherNotes(checkbox) {
-            var otherNotes = document.getElementById("otherNotes");
-            if (checkbox.checked) {
-              otherNotes.classList.remove("hidden");
-            } else {
-              otherNotes.classList.add("hidden");
-            }
-          }
-        </script>
+        <div class="section-divider"></div>
+
+        <div class="form-field">
+          <label for="past_symptoms">Past Symptoms/Health History:</label>
+          <div class="checkbox-group">
+            <label
+              ><input type="checkbox" name="past_symptoms" value="headache" />
+              Headache</label
+            >
+            <label
+              ><input type="checkbox" name="past_symptoms" value="back_pain" />
+              Back Pain</label
+            >
+            <label
+              ><input type="checkbox" name="past_symptoms" value="neck_pain" />
+              Neck Pain</label
+            >
+            <label
+              ><input
+                type="checkbox"
+                name="past_symptoms"
+                value="shoulder_pain"
+              />
+              Shoulder Pain</label
+            >
+            <label
+              ><input type="checkbox" name="past_symptoms" value="jaw_pain" />
+              Jaw Pain</label
+            >
+            <label
+              ><input
+                type="checkbox"
+                name="past_symptoms"
+                value="muscle_stiffness"
+              />
+              Muscle Stiffness</label
+            >
+            <label
+              ><input type="checkbox" name="past_symptoms" value="joint_pain" />
+              Joint Pain</label
+            >
+            <label
+              ><input type="checkbox" name="past_symptoms" value="fatigue" />
+              Fatigue</label
+            >
+            <label
+              ><input type="checkbox" name="past_symptoms" value="stress" />
+              Stress</label
+            >
+            <label
+              ><input
+                type="checkbox"
+                name="past_symptoms"
+                value="other"
+                onclick="toggleOtherNotes(this)"
+              />
+              Other</label
+            >
+          </div>
+          <textarea
+            id="otherNotes"
+            name="past_other_notes"
+            class="hidden other-notes"
+            placeholder="Please specify other symptoms"
+            style="margin-top: 10px"
+          ></textarea>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="form-field">
+          <label for="past_injuries">Past Injuries:</label>
+          <div class="checkbox-group">
+            <label>
+              <input
+                type="checkbox"
+                name="past_injuries"
+                value="sprains"
+                onclick="toggleNotes(this, 'sprainsNotes')"
+              />
+              Sprain(s)
+            </label>
+            <textarea
+              id="sprainsNotes"
+              name="sprains_notes"
+              class="hidden other-notes"
+              placeholder="Please specify details about sprain(s)"
+              style="margin-top: 10px"
+            ></textarea>
+            <label>
+              <input
+                type="checkbox"
+                name="past_injuries"
+                value="broken_bones"
+                onclick="toggleNotes(this, 'brokenBonesNotes')"
+              />
+              Broken Bone(s)
+            </label>
+            <textarea
+              id="brokenBonesNotes"
+              name="broken_bones_notes"
+              class="hidden other-notes"
+              placeholder="Please specify details about broken bone(s)"
+              style="margin-top: 10px"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="form-field">
+          <label for="past_surgeries">Past Surgeries:</label>
+          <textarea
+            id="past_surgeries"
+            name="past_surgeries"
+            placeholder="Please specify past surgeries"
+            style="margin-top: 10px"
+          ></textarea>
+        </div>
+
+        <div class="section-divider"></div>
 
         <div class="waiver">
           <h2>Client Waiver Form</h2>
           <p>
             Please take a moment to read and initial the following information:
           </p>
-          <p>
-            <input type="checkbox" name="waiver" required /> I understand that
-            massage therapy is provided for stress reduction, relaxation, relief
-            from muscular tension, and improvement of circulation and energy
-            flow.
-          </p>
+
           <p>
             <input type="checkbox" name="waiver" required /> If I experience
             pain or discomfort during the session, I will immediately inform my
