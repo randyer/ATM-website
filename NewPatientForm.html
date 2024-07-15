@@ -414,6 +414,22 @@
               placeholder="Please specify details about broken bone(s)"
               style="margin-top: 10px"
             ></textarea>
+            <label>
+              <input
+                type="checkbox"
+                name="past_injuries"
+                value="other"
+                onclick="toggleNotes(this, 'otherInjuriesNotes')"
+              />
+              Other
+            </label>
+            <textarea
+              id="otherInjuriesNotes"
+              name="other_injuries_notes"
+              class="hidden other-notes"
+              placeholder="Please specify other injuries"
+              style="margin-top: 10px"
+            ></textarea>
           </div>
         </div>
 
