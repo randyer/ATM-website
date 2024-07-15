@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Patient Form</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f4f4f4;
+      }
+      .container {
+        max-width: 600px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+      }
+      label {
+        display: block;
+        margin-top: 10px;
+      }
+      input,
+      textarea,
+      select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box; /* Added to ensure padding does not extend beyond container */
+      }
+      textarea {
+        resize: vertical;
+      }
+      .submit-btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #9d71b3;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+      .submit-btn:hover {
+        background-color: #9b7aac;
+      }
+      .checkbox-group {
+        display: flex;
+        flex-direction: column;
+      }
+      .hidden {
+        display: none;
+      }
+      .form-field {
+        padding: 5px 0; /* Added padding for form fields */
+      }
+      .waiver {
+        margin-top: 20px;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+      }
+      .waiver p {
+        margin: 10px 0;
+      }
+    </style>
+    <script>
+      function toggleOtherReferral() {
+        var referral = document.getElementById("referral");
+        var otherReferral = document.getElementById("otherReferral");
+
+        if (referral.value === "other") {
+          otherReferral.classList.remove("hidden");
+        } else {
+          otherReferral.classList.add("hidden");
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>New Patient Form</h1>
+      <form action="/submit" method="post">
+        <div class="form-field">
+          <label for="first_name">First Name:</label>
+          <input type="text" id="first_name" name="first_name" required />
+        </div>
+
+        <div class="form-field">
+          <label for="last_name">Last Name:</label>
+          <input type="text" id="last_name" name="last_name" required />
+        </div>
+
+        <div class="form-field">
+          <label for="phone">Phone:</label>
+          <input type="tel" id="phone" name="phone" required />
+        </div>
+
+        <div class="form-field">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required />
+        </div>
+
+        <div class="form-field">
+          <label for="dob">Date of Birth:</label>
+          <input type="date" id="dob" name="dob" required />
+        </div>
+
+        <div class="form-field">
+          <label for="address">Address:</label>
+          <input type="text" id="address" name="address" required />
+        </div>
+
+        <div class="form-field">
+          <label for="emergency_contact_name">Emergency Contact Name:</label>
+          <input
+            type="text"
+            id="emergency_contact_name"
+            name="emergency_contact_name"
+            required
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="emergency_contact_phone">Emergency Contact Phone:</label>
+          <input
+            type="tel"
+            id="emergency_contact_phone"
+            name="emergency_contact_phone"
+            required
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="referral">How did you hear about us:</label>
+          <select
+            id="referral"
+            name="referral"
+            onchange="toggleOtherReferral()"
+            required
+          >
+            <option value="friend_family">Friend/Family Member</option>
+            <option value="online">Online</option>
+            <option value="other">Other</option>
+          </select>
+          <input
+            type="text"
+            id="otherReferral"
+            name="other_referral"
+            class="hidden"
+            placeholder="Please specify"
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="symptoms">Symptoms/Health History:</label>
+          <div class="checkbox-group">
+            <label
+              ><input type="checkbox" name="symptoms" value="headache" />
+              Headache</label
+            >
+            <label
+              ><input type="checkbox" name="symptoms" value="back_pain" /> Back
+              Pain</label
+            >
+            <label
+              ><input type="checkbox" name="symptoms" value="neck_pain" /> Neck
+              Pain</label
+            >
+            <label
+              ><input type="checkbox" name="symptoms" value="shoulder_pain" />
+              Shoulder Pain</label
+            >
+            <label
+              ><input
+                type="checkbox"
+                name="symptoms"
+                value="muscle_stiffness"
+              />
+              Muscle Stiffness</label
+            >
+            <label
+              ><input type="checkbox" name="symptoms" value="joint_pain" />
+              Joint Pain</label
+            >
+            <label
+              ><input type="checkbox" name="symptoms" value="fatigue" />
+              Fatigue</label
+            >
+            <label
+              ><input type="checkbox" name="symptoms" value="stress" />
+              Stress</label
+            >
+
+            <label
+              ><input
+                type="checkbox"
+                name="symptoms"
+                value="other"
+                onclick="toggleOtherNotes(this)"
+              />
+              Other</label
+            >
+          </div>
+          <textarea
+            id="otherNotes"
+            name="other_notes"
+            class="hidden"
+            placeholder="Please specify other symptoms"
+            style="margin-top: 10px"
+          ></textarea>
+        </div>
+
+        <script>
+          function toggleOtherNotes(checkbox) {
+            var otherNotes = document.getElementById("otherNotes");
+            if (checkbox.checked) {
+              otherNotes.classList.remove("hidden");
+            } else {
+              otherNotes.classList.add("hidden");
+            }
+          }
+        </script>
+
+        <div class="waiver">
+          <h2>Client Waiver Form</h2>
+          <p>
+            Please take a moment to read and initial the following information:
+          </p>
+          <p>
+            <input type="checkbox" name="waiver" required /> I understand that
+            massage therapy is provided for stress reduction, relaxation, relief
+            from muscular tension, and improvement of circulation and energy
+            flow.
+          </p>
+          <p>
+            <input type="checkbox" name="waiver" required /> If I experience
+            pain or discomfort during the session, I will immediately inform my
+            therapist so that pressure/strokes can be adjusted to my level of
+            comfort. I will not hold my therapist responsible for any pain or
+            discomfort I experience during or after the session.
+          </p>
+          <p>
+            <input type="checkbox" name="waiver" required /> I understand that
+            the services offered today are not a substitute for medical care. I
+            understand that my therapist is not qualified to perform spinal or
+            skeletal adjustments, diagnose, prescribe, or treat physical or
+            mental illness.
+          </p>
+          <p>
+            <input type="checkbox" name="waiver" required /> I affirm that I
+            have notified my therapist of all known medical conditions and
+            injuries.
+          </p>
+          <p>
+            <input type="checkbox" name="waiver" required /> I agree to inform
+            the therapist of any changes in my health and medical condition. I
+            understand that there shall be no liability on the therapist’s part
+            should I forget to do so.
+          </p>
+          <p>
+            <input type="checkbox" name="waiver" required /> I understand that
+            massage is entirely therapeutic and non-sexual in nature.
+          </p>
+          <p>
+            <input type="checkbox" name="waiver" required /> By signing this
+            release, I hereby waive and release my therapist from any and all
+            liability, past, present, and future relating to massage therapy and
+            bodywork.
+          </p>
+        </div>
+
+        <button type="submit" class="submit-btn">Submit</button>
+      </form>
+    </div>
+  </body>
+</html>
