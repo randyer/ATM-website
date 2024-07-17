@@ -29,7 +29,7 @@
         display: block;
         margin-top: 10px;
       }
-      input,
+      input:not([type="checkbox"]),
       textarea,
       select {
         width: 100%;
@@ -61,16 +61,16 @@
       }
 
       .checkbox-group label {
-        display: inline-flex;
-        align-items: center;
+        /* display: inline-flex; */
+        /* align-items: center; */
         margin-right: 10px;
-        white-space: nowrap;
+        /* white-space: nowrap; */
         line-height: 1.5;
       }
 
       .checkbox-group input {
         margin-right: 5px;
-        vertical-align: middle;
+        /* vertical-align: middle; */
       }
 
       @media (max-width: 600px) {
@@ -388,9 +388,10 @@
 
         <div class="form-field">
           <label for="past_injuries">Past Injuries:</label>
+
           <div class="checkbox-group">
-            <label
-              ><input
+            <label>
+              <input
                 type="checkbox"
                 name="past_injuries"
                 value="sprains"
@@ -398,6 +399,7 @@
               />
               Sprain(s)</label
             >
+
             <textarea
               id="sprainsNotes"
               name="sprains_notes"
