@@ -57,36 +57,30 @@
         background-color: #9b7aac;
       }
       .checkbox-group {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px; /* Adjust the gap between items as needed */
+        display: block;
       }
 
       .checkbox-group label {
-        display: flex;
+        display: inline-flex;
         align-items: center;
-        margin-right: 10px; /* Adjust the margin between label and input as needed */
-        white-space: nowrap; /* Prevent label text from wrapping */
+        margin-right: 10px;
+        white-space: nowrap;
+        line-height: 1.5;
       }
 
       .checkbox-group input {
-        margin-right: 5px; /* Adjust the margin between input and label text as needed */
+        margin-right: 5px;
+        vertical-align: middle;
       }
 
       @media (max-width: 600px) {
-        .checkbox-group {
-          gap: 5px; /* Reduce gap on smaller screens */
-        }
-
         .checkbox-group label {
-          margin-right: 5px; /* Reduce margin on smaller screens */
+          margin-right: 5px;
         }
-
         .checkbox-group input {
-          margin-right: 2px; /* Reduce margin on smaller screens */
+          margin-right: 2px;
         }
       }
-
       .hidden {
         display: none;
       }
@@ -127,7 +121,6 @@
           notes.classList.add("hidden");
         }
       }
-
       function toggleOtherNotes(checkbox) {
         var otherNotes = checkbox
           .closest(".form-field")
@@ -396,15 +389,15 @@
         <div class="form-field">
           <label for="past_injuries">Past Injuries:</label>
           <div class="checkbox-group">
-            <label>
-              <input
+            <label
+              ><input
                 type="checkbox"
                 name="past_injuries"
                 value="sprains"
                 onclick="toggleNotes(this, 'sprainsNotes')"
               />
-              Sprain(s)
-            </label>
+              Sprain(s)</label
+            >
             <textarea
               id="sprainsNotes"
               name="sprains_notes"
@@ -412,15 +405,15 @@
               placeholder="Please specify details about sprain(s)"
               style="margin-top: 10px"
             ></textarea>
-            <label>
-              <input
+            <label
+              ><input
                 type="checkbox"
                 name="past_injuries"
                 value="broken_bones"
                 onclick="toggleNotes(this, 'brokenBonesNotes')"
               />
-              Broken Bone(s)
-            </label>
+              Broken Bone(s)</label
+            >
             <textarea
               id="brokenBonesNotes"
               name="broken_bones_notes"
@@ -428,15 +421,15 @@
               placeholder="Please specify details about broken bone(s)"
               style="margin-top: 10px"
             ></textarea>
-            <label>
-              <input
+            <label
+              ><input
                 type="checkbox"
                 name="past_injuries"
                 value="other"
                 onclick="toggleNotes(this, 'otherInjuriesNotes')"
               />
-              Other
-            </label>
+              Other</label
+            >
             <textarea
               id="otherInjuriesNotes"
               name="other_injuries_notes"
@@ -466,7 +459,6 @@
           <p>
             Please take a moment to read and initial the following information:
           </p>
-
           <p>
             <input type="checkbox" name="waiver" required /> If I experience
             pain or discomfort during the session, I will immediately inform my
