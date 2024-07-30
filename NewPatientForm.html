@@ -19,20 +19,20 @@
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        font-size: 1.2rem; /* Increase font size for better readability */
+        font-size: 1.2rem;
       }
       h1 {
         text-align: center;
-        font-size: 1.8rem; /* Adjust heading size */
+        font-size: 1.8rem;
       }
       h2 {
         margin-top: 30px;
-        font-size: 1.5rem; /* Adjust heading size */
+        font-size: 1.5rem;
       }
       label {
         display: block;
         margin-top: 10px;
-        font-size: 1.2rem; /* Adjust label size */
+        font-size: 1.2rem;
       }
       input:not([type="checkbox"]),
       textarea,
@@ -43,11 +43,11 @@
         border: 1px solid #ccc;
         border-radius: 4px;
         box-sizing: border-box;
-        font-size: 1.2rem; /* Adjust input size */
+        font-size: 1.2rem;
       }
       textarea {
         resize: vertical;
-        font-size: 1.2rem; /* Adjust textarea size */
+        font-size: 1.2rem;
       }
       .submit-btn {
         display: block;
@@ -59,29 +59,22 @@
         border-radius: 4px;
         cursor: pointer;
         margin-top: 20px;
-        font-size: 1.2rem; /* Adjust button size */
+        font-size: 1.2rem;
       }
       .submit-btn:hover {
         background-color: #9b7aac;
       }
       .checkbox-group {
         display: block;
-        font-size: 1.2rem; /* Adjust checkbox label size */
+        font-size: 1.2rem;
       }
-
       .checkbox-group label {
-        /* display: inline-flex; */
-        /* align-items: center; */
         margin-right: 10px;
-        /* white-space: nowrap; */
         line-height: 1.5;
       }
-
       .checkbox-group input {
         margin-right: 5px;
-        /* vertical-align: middle; */
       }
-
       @media (max-width: 600px) {
         .checkbox-group label {
           margin-right: 5px;
@@ -95,7 +88,7 @@
       }
       .form-field {
         padding: 5px 0;
-        font-size: 1.2rem; /* Adjust form field size */
+        font-size: 1.2rem;
       }
       .section-divider {
         border-top: 1px solid #ccc;
@@ -107,7 +100,7 @@
         border: 1px solid #ccc;
         border-radius: 4px;
         background-color: #f9f9f9;
-        font-size: 1.2rem; /* Adjust waiver paragraph size */
+        font-size: 1.2rem;
       }
       .waiver p {
         margin: 10px 0;
@@ -124,22 +117,13 @@
           otherReferral.classList.add("hidden");
         }
       }
-      function toggleNotes(checkbox, notesId) {
-        var notes = document.getElementById(notesId);
+
+      function toggleSymptomDetails(checkbox, detailsId) {
+        var details = document.getElementById(detailsId);
         if (checkbox.checked) {
-          notes.classList.remove("hidden");
+          details.classList.remove("hidden");
         } else {
-          notes.classList.add("hidden");
-        }
-      }
-      function toggleOtherNotes(checkbox) {
-        var otherNotes = checkbox
-          .closest(".form-field")
-          .querySelector(".other-notes");
-        if (checkbox.checked) {
-          otherNotes.classList.remove("hidden");
-        } else {
-          otherNotes.classList.add("hidden");
+          details.classList.add("hidden");
         }
       }
     </script>
@@ -249,82 +233,222 @@
                 type="checkbox"
                 name="current_symptoms"
                 value="headache"
+                onclick="toggleSymptomDetails(this, 'headacheDetails')"
               />
               Headache</label
             >
+            <div id="headacheDetails" class="hidden">
+              <label>Frequency:</label>
+              <select name="headache_frequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="rarely">Rarely</option>
+              </select>
+              <label>Location:</label>
+              <input type="text" name="headache_location" />
+              <label>Intensity (1-5):</label>
+              <input type="number" name="headache_intensity" min="1" max="5" />
+            </div>
             <label
               ><input
                 type="checkbox"
                 name="current_symptoms"
                 value="back_pain"
+                onclick="toggleSymptomDetails(this, 'backPainDetails')"
               />
               Back Pain</label
             >
+            <div id="backPainDetails" class="hidden">
+              <label>Frequency:</label>
+              <select name="back_pain_frequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="rarely">Rarely</option>
+              </select>
+              <label>Location:</label>
+              <input type="text" name="back_pain_location" />
+              <label>Intensity (1-5):</label>
+              <input type="number" name="back_pain_intensity" min="1" max="5" />
+            </div>
             <label
               ><input
                 type="checkbox"
                 name="current_symptoms"
                 value="neck_pain"
+                onclick="toggleSymptomDetails(this, 'neckPainDetails')"
               />
               Neck Pain</label
             >
+            <div id="neckPainDetails" class="hidden">
+              <label>Frequency:</label>
+              <select name="neck_pain_frequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="rarely">Rarely</option>
+              </select>
+              <label>Location:</label>
+              <input type="text" name="neck_pain_location" />
+              <label>Intensity (1-5):</label>
+              <input type="number" name="neck_pain_intensity" min="1" max="5" />
+            </div>
             <label
               ><input
                 type="checkbox"
                 name="current_symptoms"
                 value="shoulder_pain"
+                onclick="toggleSymptomDetails(this, 'shoulderPainDetails')"
               />
               Shoulder Pain</label
             >
+            <div id="shoulderPainDetails" class="hidden">
+              <label>Frequency:</label>
+              <select name="shoulder_pain_frequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="rarely">Rarely</option>
+              </select>
+              <label>Location:</label>
+              <input type="text" name="shoulder_pain_location" />
+              <label>Intensity (1-5):</label>
+              <input
+                type="number"
+                name="shoulder_pain_intensity"
+                min="1"
+                max="5"
+              />
+            </div>
             <label
               ><input
                 type="checkbox"
                 name="current_symptoms"
                 value="jaw_pain"
+                onclick="toggleSymptomDetails(this, 'jawPainDetails')"
               />
               Jaw Pain</label
             >
+            <div id="jawPainDetails" class="hidden">
+              <label>Frequency:</label>
+              <select name="jaw_pain_frequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="rarely">Rarely</option>
+              </select>
+              <label>Location:</label>
+              <input type="text" name="jaw_pain_location" />
+              <label>Intensity (1-5):</label>
+              <input type="number" name="jaw_pain_intensity" min="1" max="5" />
+            </div>
             <label
               ><input
                 type="checkbox"
                 name="current_symptoms"
                 value="muscle_stiffness"
+                onclick="toggleSymptomDetails(this, 'muscleStiffnessDetails')"
               />
               Muscle Stiffness</label
             >
+            <div id="muscleStiffnessDetails" class="hidden">
+              <label>Frequency:</label>
+              <select name="muscle_stiffness_frequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="rarely">Rarely</option>
+              </select>
+              <label>Location:</label>
+              <input type="text" name="muscle_stiffness_location" />
+              <label>Intensity (1-5):</label>
+              <input
+                type="number"
+                name="muscle_stiffness_intensity"
+                min="1"
+                max="5"
+              />
+            </div>
             <label
               ><input
                 type="checkbox"
                 name="current_symptoms"
                 value="joint_pain"
+                onclick="toggleSymptomDetails(this, 'jointPainDetails')"
               />
               Joint Pain</label
             >
+            <div id="jointPainDetails" class="hidden">
+              <label>Frequency:</label>
+              <select name="joint_pain_frequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="rarely">Rarely</option>
+              </select>
+              <label>Location:</label>
+              <input type="text" name="joint_pain_location" />
+              <label>Intensity (1-5):</label>
+              <input
+                type="number"
+                name="joint_pain_intensity"
+                min="1"
+                max="5"
+              />
+            </div>
             <label
-              ><input type="checkbox" name="current_symptoms" value="fatigue" />
+              ><input
+                type="checkbox"
+                name="current_symptoms"
+                value="fatigue"
+                onclick="toggleSymptomDetails(this, 'fatigueDetails')"
+              />
               Fatigue</label
             >
+            <div id="fatigueDetails" class="hidden">
+              <label>Frequency:</label>
+              <select name="fatigue_frequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="rarely">Rarely</option>
+              </select>
+              <label>Location:</label>
+              <input type="text" name="fatigue_location" />
+              <label>Intensity (1-5):</label>
+              <input type="number" name="fatigue_intensity" min="1" max="5" />
+            </div>
             <label
-              ><input type="checkbox" name="current_symptoms" value="stress" />
+              ><input
+                type="checkbox"
+                name="current_symptoms"
+                value="stress"
+                onclick="toggleSymptomDetails(this, 'stressDetails')"
+              />
               Stress</label
             >
+            <div id="stressDetails" class="hidden">
+              <label>Frequency:</label>
+              <select name="stress_frequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="rarely">Rarely</option>
+              </select>
+              <label>Location:</label>
+              <input type="text" name="stress_location" />
+              <label>Intensity (1-5):</label>
+              <input type="number" name="stress_intensity" min="1" max="5" />
+            </div>
             <label
               ><input
                 type="checkbox"
                 name="current_symptoms"
                 value="other"
-                onclick="toggleOtherNotes(this)"
+                onclick="toggleSymptomDetails(this, 'otherSymptomsDetails')"
               />
               Other</label
             >
+            <textarea
+              id="otherSymptomsDetails"
+              name="current_other_notes"
+              class="hidden other-notes"
+              placeholder="Please specify other symptoms"
+              style="margin-top: 10px"
+            ></textarea>
           </div>
-          <textarea
-            id="otherNotes"
-            name="current_other_notes"
-            class="hidden other-notes"
-            placeholder="Please specify other symptoms"
-            style="margin-top: 10px"
-          ></textarea>
         </div>
 
         <div class="section-divider"></div>
@@ -333,66 +457,256 @@
           <label for="past_symptoms">Past Symptoms/Health History:</label>
           <div class="checkbox-group">
             <label
-              ><input type="checkbox" name="past_symptoms" value="headache" />
+              ><input
+                type="checkbox"
+                name="past_symptoms"
+                value="headache"
+                onclick="toggleSymptomDetails(this, 'pastHeadacheDetails')"
+              />
               Headache</label
             >
+            <div id="pastHeadacheDetails" class="hidden">
+              <label>Frequency:</label>
+              <select name="past_headache_frequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="rarely">Rarely</option>
+              </select>
+              <label>Location:</label>
+              <input type="text" name="past_headache_location" />
+              <label>Intensity (1-5):</label>
+              <input
+                type="number"
+                name="past_headache_intensity"
+                min="1"
+                max="5"
+              />
+            </div>
             <label
-              ><input type="checkbox" name="past_symptoms" value="back_pain" />
+              ><input
+                type="checkbox"
+                name="past_symptoms"
+                value="back_pain"
+                onclick="toggleSymptomDetails(this, 'pastBackPainDetails')"
+              />
               Back Pain</label
             >
+            <div id="pastBackPainDetails" class="hidden">
+              <label>Frequency:</label>
+              <select name="past_back_pain_frequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="rarely">Rarely</option>
+              </select>
+              <label>Location:</label>
+              <input type="text" name="past_back_pain_location" />
+              <label>Intensity (1-5):</label>
+              <input
+                type="number"
+                name="past_back_pain_intensity"
+                min="1"
+                max="5"
+              />
+            </div>
             <label
-              ><input type="checkbox" name="past_symptoms" value="neck_pain" />
+              ><input
+                type="checkbox"
+                name="past_symptoms"
+                value="neck_pain"
+                onclick="toggleSymptomDetails(this, 'pastNeckPainDetails')"
+              />
               Neck Pain</label
             >
+            <div id="pastNeckPainDetails" class="hidden">
+              <label>Frequency:</label>
+              <select name="past_neck_pain_frequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="rarely">Rarely</option>
+              </select>
+              <label>Location:</label>
+              <input type="text" name="past_neck_pain_location" />
+              <label>Intensity (1-5):</label>
+              <input
+                type="number"
+                name="past_neck_pain_intensity"
+                min="1"
+                max="5"
+              />
+            </div>
             <label
               ><input
                 type="checkbox"
                 name="past_symptoms"
                 value="shoulder_pain"
+                onclick="toggleSymptomDetails(this, 'pastShoulderPainDetails')"
               />
               Shoulder Pain</label
             >
+            <div id="pastShoulderPainDetails" class="hidden">
+              <label>Frequency:</label>
+              <select name="past_shoulder_pain_frequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="rarely">Rarely</option>
+              </select>
+              <label>Location:</label>
+              <input type="text" name="past_shoulder_pain_location" />
+              <label>Intensity (1-5):</label>
+              <input
+                type="number"
+                name="past_shoulder_pain_intensity"
+                min="1"
+                max="5"
+              />
+            </div>
             <label
-              ><input type="checkbox" name="past_symptoms" value="jaw_pain" />
+              ><input
+                type="checkbox"
+                name="past_symptoms"
+                value="jaw_pain"
+                onclick="toggleSymptomDetails(this, 'pastJawPainDetails')"
+              />
               Jaw Pain</label
             >
+            <div id="pastJawPainDetails" class="hidden">
+              <label>Frequency:</label>
+              <select name="past_jaw_pain_frequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="rarely">Rarely</option>
+              </select>
+              <label>Location:</label>
+              <input type="text" name="past_jaw_pain_location" />
+              <label>Intensity (1-5):</label>
+              <input
+                type="number"
+                name="past_jaw_pain_intensity"
+                min="1"
+                max="5"
+              />
+            </div>
             <label
               ><input
                 type="checkbox"
                 name="past_symptoms"
                 value="muscle_stiffness"
+                onclick="toggleSymptomDetails(this, 'pastMuscleStiffnessDetails')"
               />
               Muscle Stiffness</label
             >
+            <div id="pastMuscleStiffnessDetails" class="hidden">
+              <label>Frequency:</label>
+              <select name="past_muscle_stiffness_frequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="rarely">Rarely</option>
+              </select>
+              <label>Location:</label>
+              <input type="text" name="past_muscle_stiffness_location" />
+              <label>Intensity (1-5):</label>
+              <input
+                type="number"
+                name="past_muscle_stiffness_intensity"
+                min="1"
+                max="5"
+              />
+            </div>
             <label
-              ><input type="checkbox" name="past_symptoms" value="joint_pain" />
+              ><input
+                type="checkbox"
+                name="past_symptoms"
+                value="joint_pain"
+                onclick="toggleSymptomDetails(this, 'pastJointPainDetails')"
+              />
               Joint Pain</label
             >
+            <div id="pastJointPainDetails" class="hidden">
+              <label>Frequency:</label>
+              <select name="past_joint_pain_frequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="rarely">Rarely</option>
+              </select>
+              <label>Location:</label>
+              <input type="text" name="past_joint_pain_location" />
+              <label>Intensity (1-5):</label>
+              <input
+                type="number"
+                name="past_joint_pain_intensity"
+                min="1"
+                max="5"
+              />
+            </div>
             <label
-              ><input type="checkbox" name="past_symptoms" value="fatigue" />
+              ><input
+                type="checkbox"
+                name="past_symptoms"
+                value="fatigue"
+                onclick="toggleSymptomDetails(this, 'pastFatigueDetails')"
+              />
               Fatigue</label
             >
+            <div id="pastFatigueDetails" class="hidden">
+              <label>Frequency:</label>
+              <select name="past_fatigue_frequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="rarely">Rarely</option>
+              </select>
+              <label>Location:</label>
+              <input type="text" name="past_fatigue_location" />
+              <label>Intensity (1-5):</label>
+              <input
+                type="number"
+                name="past_fatigue_intensity"
+                min="1"
+                max="5"
+              />
+            </div>
             <label
-              ><input type="checkbox" name="past_symptoms" value="stress" />
+              ><input
+                type="checkbox"
+                name="past_symptoms"
+                value="stress"
+                onclick="toggleSymptomDetails(this, 'pastStressDetails')"
+              />
               Stress</label
             >
+            <div id="pastStressDetails" class="hidden">
+              <label>Frequency:</label>
+              <select name="past_stress_frequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="rarely">Rarely</option>
+              </select>
+              <label>Location:</label>
+              <input type="text" name="past_stress_location" />
+              <label>Intensity (1-5):</label>
+              <input
+                type="number"
+                name="past_stress_intensity"
+                min="1"
+                max="5"
+              />
+            </div>
             <label
               ><input
                 type="checkbox"
                 name="past_symptoms"
                 value="other"
-                onclick="toggleOtherNotes(this)"
+                onclick="toggleSymptomDetails(this, 'pastOtherSymptomsDetails')"
               />
               Other</label
             >
+            <textarea
+              id="pastOtherSymptomsDetails"
+              name="past_other_notes"
+              class="hidden other-notes"
+              placeholder="Please specify other symptoms"
+              style="margin-top: 10px"
+            ></textarea>
           </div>
-          <textarea
-            id="otherNotes"
-            name="past_other_notes"
-            class="hidden other-notes"
-            placeholder="Please specify other symptoms"
-            style="margin-top: 10px"
-          ></textarea>
         </div>
 
         <div class="section-divider"></div>
@@ -406,50 +720,55 @@
                 type="checkbox"
                 name="past_injuries"
                 value="sprains"
-                onclick="toggleNotes(this, 'sprainsNotes')"
+                onclick="toggleSymptomDetails(this, 'sprainsDetails')"
               />
               Sprain(s)</label
             >
-
-            <textarea
-              id="sprainsNotes"
-              name="sprains_notes"
-              class="hidden other-notes"
-              placeholder="Please specify details about sprain(s)"
-              style="margin-top: 10px"
-            ></textarea>
+            <div id="sprainsDetails" class="hidden">
+              <textarea
+                id="sprainsNotes"
+                name="sprains_notes"
+                class="hidden other-notes"
+                placeholder="Please specify details about sprain(s)"
+                style="margin-top: 10px"
+              ></textarea>
+            </div>
             <label
               ><input
                 type="checkbox"
                 name="past_injuries"
                 value="broken_bones"
-                onclick="toggleNotes(this, 'brokenBonesNotes')"
+                onclick="toggleSymptomDetails(this, 'brokenBonesDetails')"
               />
               Broken Bone(s)</label
             >
-            <textarea
-              id="brokenBonesNotes"
-              name="broken_bones_notes"
-              class="hidden other-notes"
-              placeholder="Please specify details about broken bone(s)"
-              style="margin-top: 10px"
-            ></textarea>
+            <div id="brokenBonesDetails" class="hidden">
+              <textarea
+                id="brokenBonesNotes"
+                name="broken_bones_notes"
+                class="hidden other-notes"
+                placeholder="Please specify details about broken bone(s)"
+                style="margin-top: 10px"
+              ></textarea>
+            </div>
             <label
               ><input
                 type="checkbox"
                 name="past_injuries"
                 value="other"
-                onclick="toggleNotes(this, 'otherInjuriesNotes')"
+                onclick="toggleSymptomDetails(this, 'otherInjuriesDetails')"
               />
               Other</label
             >
-            <textarea
-              id="otherInjuriesNotes"
-              name="other_injuries_notes"
-              class="hidden other-notes"
-              placeholder="Please specify other injuries"
-              style="margin-top: 10px"
-            ></textarea>
+            <div id="otherInjuriesDetails" class="hidden">
+              <textarea
+                id="otherInjuriesNotes"
+                name="other_injuries_notes"
+                class="hidden other-notes"
+                placeholder="Please specify other injuries"
+                style="margin-top: 10px"
+              ></textarea>
+            </div>
           </div>
         </div>
 
