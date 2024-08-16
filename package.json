@@ -1,0 +1,24 @@
+{
+  "name": "atm-website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "NewPatientForm.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/randyer/ATM-website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/randyer/ATM-website/issues"
+  },
+  "homepage": "https://github.com/randyer/ATM-website#readme",
+  "dependencies": {
+    "@aws-amplify/api": "^6.0.45",
+    "aws-amplify": "^6.5.1"
+  }
+}
