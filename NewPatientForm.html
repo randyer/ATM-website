@@ -4,6 +4,99 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>New Patient Form</title>
+    <script>
+      // Function to get checked values from checkbox groups with details
+      function getCheckedValuesWithDetails(
+        name,
+        past = false,
+        isInjury = false
+      ) {
+        return Array.from(
+          document.querySelectorAll(`input[name="${name}"]:checked`)
+        ).map((checkbox) => {
+          const symptom = checkbox.value;
+          if (isInjury) {
+            // For past injuries, retrieve notes from the textarea
+            const notes =
+              document.querySelector(`textarea[name="${symptom}_notes"]`)
+                ?.value || "";
+            return `${symptom} (${notes})`;
+          } else {
+            const prefix = past ? "past_" : "";
+            const frequency =
+              document.querySelector(
+                `select[name="${prefix}${symptom}_frequency"]`
+              )?.value || "";
+            const location =
+              document.querySelector(
+                `input[name="${prefix}${symptom}_location"]`
+              )?.value || "";
+            const intensity =
+              document.querySelector(
+                `input[name="${prefix}${symptom}_intensity"]`
+              )?.value || "";
+            return `${symptom} (Frequency: ${frequency}, Location: ${location}, Intensity: ${intensity})`;
+          }
+        });
+      }
+
+      async function postClient() {
+        const data = {
+          first_name: document.getElementById("first_name").value,
+          last_name: document.getElementById("last_name").value,
+          phone: document.getElementById("phone").value,
+          email: document.getElementById("email").value,
+          dob: document.getElementById("dob").value,
+          street: document.getElementById("street_address").value,
+          city: document.getElementById("city").value,
+          state: document.getElementById("state").value,
+          zip: document.getElementById("zip").value,
+          emergency_contact: document.getElementById("emergency_contact_name")
+            .value,
+          emergency_contact_phone: document.getElementById(
+            "emergency_contact_phone"
+          ).value,
+          heard_about_us: document.getElementById("referral").value,
+          current_symptoms:
+            getCheckedValuesWithDetails("current_symptoms").join(", "),
+          past_symptoms: getCheckedValuesWithDetails(
+            "past_symptoms",
+            true
+          ).join(", "),
+          past_injuries: getCheckedValuesWithDetails(
+            "past_injuries",
+            true,
+            true
+          ).join(", "),
+          past_surgeries: document.getElementById("past_surgeries").value,
+          form_data: `Current Symptoms: ${getCheckedValuesWithDetails(
+            "current_symptoms"
+          ).join(", ")}
+Past Symptoms: ${getCheckedValuesWithDetails("past_symptoms", true).join(", ")}
+Past Injuries: ${getCheckedValuesWithDetails("past_injuries", true, true).join(
+            ", "
+          )}
+Past Surgeries: ${document.getElementById("past_surgeries").value}`,
+        };
+
+        console.log("data:", JSON.stringify(data));
+        // Replace with your API Gateway URL
+        const apiUrl =
+          "https://rojwnqs7nuz5qzoydq6f3qk3te0ucghe.lambda-url.us-east-2.on.aws/";
+
+        try {
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            body: JSON.stringify(data),
+          });
+
+          const result = await response.json();
+          console.log("Success:", result);
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+    </script>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -149,37 +242,32 @@
 
         <div class="form-field">
           <label for="email">Email:</label>
-          <input type="email" id="email" name="email" required />
+          <input type="email" id="email" name="email" />
         </div>
 
         <div class="form-field">
           <label for="dob">Date of Birth:</label>
-          <input type="date" id="dob" name="dob" required />
+          <input type="date" id="dob" name="dob" />
         </div>
 
         <div class="form-field">
           <label for="street_address">Street Address:</label>
-          <input
-            type="text"
-            id="street_address"
-            name="street_address"
-            required
-          />
+          <input type="text" id="street_address" name="street_address" />
         </div>
 
         <div class="form-field">
           <label for="city">City:</label>
-          <input type="text" id="city" name="city" required />
+          <input type="text" id="city" name="city" />
         </div>
 
         <div class="form-field">
           <label for="state">State:</label>
-          <input type="text" id="state" name="state" required />
+          <input type="text" id="state" name="state" />
         </div>
 
         <div class="form-field">
           <label for="zip">Zip Code:</label>
-          <input type="text" id="zip" name="zip" required />
+          <input type="text" id="zip" name="zip" />
         </div>
 
         <div class="form-field">
@@ -188,7 +276,6 @@
             type="text"
             id="emergency_contact_name"
             name="emergency_contact_name"
-            required
           />
         </div>
 
@@ -198,7 +285,6 @@
             type="tel"
             id="emergency_contact_phone"
             name="emergency_contact_phone"
-            required
           />
         </div>
 
@@ -208,7 +294,6 @@
             id="referral"
             name="referral"
             onchange="toggleOtherReferral()"
-            required
           >
             <option value="friend_family">Friend/Family Member</option>
             <option value="online">Online</option>
@@ -714,8 +799,8 @@
                 value="sprains"
                 onclick="toggleSymptomDetails(this, 'sprainsDetails')"
               />
-              Sprain(s)</label
-            >
+              Sprain(s)
+            </label>
             <div id="sprainsDetails" class="hidden">
               <textarea
                 id="sprainsNotes"
@@ -725,15 +810,16 @@
                 style="margin-top: 10px"
               ></textarea>
             </div>
-            <label
-              ><input
+
+            <label>
+              <input
                 type="checkbox"
                 name="past_injuries"
                 value="broken_bones"
                 onclick="toggleSymptomDetails(this, 'brokenBonesDetails')"
               />
-              Broken Bone(s)</label
-            >
+              Broken Bone(s)
+            </label>
             <div id="brokenBonesDetails" class="hidden">
               <textarea
                 id="brokenBonesNotes"
@@ -743,15 +829,35 @@
                 style="margin-top: 10px"
               ></textarea>
             </div>
-            <label
-              ><input
+
+            <label>
+              <input
+                type="checkbox"
+                name="past_injuries"
+                value="concussions"
+                onclick="toggleSymptomDetails(this, 'concussionsDetails')"
+              />
+              Concussion(s)
+            </label>
+            <div id="concussionsDetails" class="hidden">
+              <textarea
+                id="concussionsNotes"
+                name="concussions_notes"
+                class="other-notes"
+                placeholder="Please specify details about concussion(s)"
+                style="margin-top: 10px"
+              ></textarea>
+            </div>
+
+            <label>
+              <input
                 type="checkbox"
                 name="past_injuries"
                 value="other"
                 onclick="toggleSymptomDetails(this, 'otherInjuriesDetails')"
               />
-              Other</label
-            >
+              Other
+            </label>
             <div id="otherInjuriesDetails" class="hidden">
               <textarea
                 id="otherInjuriesNotes"
@@ -841,8 +947,11 @@
           />
         </div>
 
-        <button type="submit" class="submit-btn">Submit</button>
+        <button type="button" class="submit-btn" onclick="postClient()">
+          Submit
+        </button>
       </form>
+      <button type="button" onclick="postClient()">get hello</button>
     </div>
   </body>
 </html>
