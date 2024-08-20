@@ -4,8 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>New Patient Form</title>
+    <link rel="stylesheet" href="css/patientForm.css" />
+
     <script>
       // Function to get checked values from checkbox groups with details
+
       function getCheckedValuesWithDetails(
         name,
         past = false,
@@ -21,26 +24,49 @@
               document.querySelector(`textarea[name="${symptom}_notes"]`)
                 ?.value || "";
             return `${symptom} (${notes})`;
+          } else if (symptom === "other") {
+            // Handle "other" option for current or past symptoms
+            const notes = document.querySelector(
+              `textarea[name="${past ? "past" : "current"}_other_notes"]`
+            )?.value;
+            return `Other (${notes})`;
           } else {
             const prefix = past ? "past_" : "";
             const frequency =
               document.querySelector(
                 `select[name="${prefix}${symptom}_frequency"]`
-              )?.value || "";
+              )?.value || "N/A";
             const location =
               document.querySelector(
                 `input[name="${prefix}${symptom}_location"]`
-              )?.value || "";
+              )?.value || "N/A";
             const intensity =
               document.querySelector(
                 `input[name="${prefix}${symptom}_intensity"]`
-              )?.value || "";
+              )?.value || "N/A";
             return `${symptom} (Frequency: ${frequency}, Location: ${location}, Intensity: ${intensity})`;
           }
         });
       }
 
       async function postClient() {
+        const currentSymptoms = getCheckedValuesWithDetails("current_symptoms")
+          .join(", ")
+          .replace(/\s*\n\s*/g, " ");
+        const pastSymptoms = getCheckedValuesWithDetails("past_symptoms", true)
+          .join(", ")
+          .replace(/\s*\n\s*/g, " ");
+        const pastInjuries = getCheckedValuesWithDetails(
+          "past_injuries",
+          true,
+          true
+        )
+          .join(", ")
+          .replace(/\s*\n\s*/g, " ");
+        const pastSurgeries = document
+          .getElementById("past_surgeries")
+          .value.trim();
+
         const data = {
           first_name: document.getElementById("first_name").value,
           last_name: document.getElementById("last_name").value,
@@ -57,29 +83,14 @@
             "emergency_contact_phone"
           ).value,
           heard_about_us: document.getElementById("referral").value,
-          current_symptoms:
-            getCheckedValuesWithDetails("current_symptoms").join(", "),
-          past_symptoms: getCheckedValuesWithDetails(
-            "past_symptoms",
-            true
-          ).join(", "),
-          past_injuries: getCheckedValuesWithDetails(
-            "past_injuries",
-            true,
-            true
-          ).join(", "),
-          past_surgeries: document.getElementById("past_surgeries").value,
-          form_data: `Current Symptoms: ${getCheckedValuesWithDetails(
-            "current_symptoms"
-          ).join(", ")}
-Past Symptoms: ${getCheckedValuesWithDetails("past_symptoms", true).join(", ")}
-Past Injuries: ${getCheckedValuesWithDetails("past_injuries", true, true).join(
-            ", "
-          )}
-Past Surgeries: ${document.getElementById("past_surgeries").value}`,
+          current_symptoms: currentSymptoms,
+          past_symptoms: pastSymptoms,
+          past_injuries: pastInjuries,
+          past_surgeries: pastSurgeries,
+          form_data: `Current Symptoms: ${currentSymptoms}\n\nPast Symptoms: ${pastSymptoms}\n\nPast Injuries: ${pastInjuries}\n\nPast Surgeries: ${pastSurgeries}`,
         };
 
-        console.log("data:", JSON.stringify(data));
+        console.log("data:", JSON.stringify(data, null, 2));
         // Replace with your API Gateway URL
         const apiUrl =
           "https://rojwnqs7nuz5qzoydq6f3qk3te0ucghe.lambda-url.us-east-2.on.aws/";
@@ -95,112 +106,11 @@ Past Surgeries: ${document.getElementById("past_surgeries").value}`,
         } catch (error) {
           console.error("Error:", error);
         } finally {
-          alert("form submitted!");
+          alert("Form submitted!");
         }
       }
     </script>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 20px;
-        background-color: #f4f4f4;
-        font-size: 1.2rem;
-      }
-      .container {
-        max-width: 600px;
-        margin: auto;
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        font-size: 1.2rem;
-      }
-      h1 {
-        text-align: center;
-        font-size: 1.8rem;
-      }
-      h2 {
-        margin-top: 30px;
-        font-size: 1.5rem;
-      }
-      label {
-        display: block;
-        margin-top: 10px;
-        font-size: 1.2rem;
-      }
-      input:not([type="checkbox"]),
-      textarea,
-      select {
-        width: 100%;
-        padding: 10px;
-        margin-top: 5px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-        font-size: 1.2rem;
-      }
-      textarea {
-        resize: vertical;
-        font-size: 1.2rem;
-      }
-      .submit-btn {
-        display: block;
-        width: 100%;
-        padding: 10px;
-        background-color: #9d71b3;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-top: 20px;
-        font-size: 1.2rem;
-      }
-      .submit-btn:hover {
-        background-color: #9b7aac;
-      }
-      .checkbox-group {
-        display: block;
-        font-size: 1.2rem;
-      }
-      .checkbox-group label {
-        margin-right: 10px;
-        line-height: 1.5;
-      }
-      .checkbox-group input {
-        margin-right: 5px;
-      }
-      @media (max-width: 600px) {
-        .checkbox-group label {
-          margin-right: 5px;
-        }
-        .checkbox-group input {
-          margin-right: 2px;
-        }
-      }
-      .hidden {
-        display: none;
-      }
-      .form-field {
-        padding: 5px 0;
-        font-size: 1.2rem;
-      }
-      .section-divider {
-        border-top: 1px solid #ccc;
-        margin: 20px 0;
-      }
-      .waiver {
-        margin-top: 20px;
-        padding: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        background-color: #f9f9f9;
-        font-size: 1.2rem;
-      }
-      .waiver p {
-        margin: 10px 0;
-      }
-    </style>
+
     <script>
       function toggleOtherReferral() {
         var referral = document.getElementById("referral");
