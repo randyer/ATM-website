@@ -861,10 +861,16 @@
           />
         </div>
 
-        <button type="button" class="submit-btn" onclick="postClient()">
-          Submit
-        </button>
+        <button type="submit" class="submit-btn">Submit</button>
       </form>
+      <script>
+        document
+          .querySelector("form")
+          .addEventListener("submit", async function (event) {
+            event.preventDefault();
+            await postClient();
+          });
+      </script>
     </div>
   </body>
 </html>
