@@ -52,14 +52,19 @@ async function postClient() {
       true
     ).join(", "),
     past_surgeries: document.getElementById("past_surgeries").value,
-    form_data: `Current Symptoms: ${getCheckedValuesWithDetails(
-      "current_symptoms"
-    ).join(", ")}
-Past Symptoms: ${getCheckedValuesWithDetails("past_symptoms", true).join(", ")}
-Past Injuries: ${getCheckedValuesWithDetails("past_injuries", true, true).join(
-      ", "
-    )}
-Past Surgeries: ${document.getElementById("past_surgeries").value}`,
+    form_data:
+      `Current Symptoms: ${getCheckedValuesWithDetails("current_symptoms").join(
+        ", "
+      )}\n\n` +
+      `Past Symptoms: ${getCheckedValuesWithDetails("past_symptoms", true).join(
+        ", "
+      )}\n\n` +
+      `Past Injuries: ${getCheckedValuesWithDetails(
+        "past_injuries",
+        true,
+        true
+      ).join(", ")}\n\n` +
+      `Past Surgeries: ${document.getElementById("past_surgeries").value}`,
   };
 
   console.log("data:", JSON.stringify(data));
