@@ -947,42 +947,40 @@
           <h2>Client Waiver Form</h2>
           <p>Please take a moment to agree to the following terms:</p>
           <p>
-            <input type="checkbox" name="waiver" required /> If I experience
-            pain or discomfort during the session, I will immediately inform my
+            <input type="checkbox" name="waiver" /> If I experience pain or
+            discomfort during the session, I will immediately inform my
             therapist so that pressure/strokes can be adjusted to my level of
             comfort. I will not hold my therapist responsible for any pain or
             discomfort I experience during or after the session.
           </p>
           <p>
-            <input type="checkbox" name="waiver" required /> I understand that
-            the services offered today are not a substitute for medical care. I
+            <input type="checkbox" name="waiver" /> I understand that the
+            services offered today are not a substitute for medical care. I
             understand that my therapist is not qualified to perform spinal or
             skeletal adjustments, diagnose, prescribe, or treat physical or
             mental illness.
           </p>
           <p>
-            <input type="checkbox" name="waiver" required /> I affirm that I
-            have notified my therapist of all known medical conditions and
-            injuries.
+            <input type="checkbox" name="waiver" /> I affirm that I have
+            notified my therapist of all known medical conditions and injuries.
           </p>
           <p>
-            <input type="checkbox" name="waiver" required /> I agree to inform
-            the therapist of any changes in my health and medical condition. I
+            <input type="checkbox" name="waiver" /> I agree to inform the
+            therapist of any changes in my health and medical condition. I
             understand that there shall be no liability on the therapist’s part
             should I forget to do so.
           </p>
           <p>
-            <input type="checkbox" name="waiver" required /> I understand that
-            massage is entirely therapeutic and non-sexual in nature.
+            <input type="checkbox" name="waiver" /> I understand that massage is
+            entirely therapeutic and non-sexual in nature.
           </p>
           <p>
-            <input type="checkbox" name="waiver" required /> By signing this
-            release, I hereby waive and release my therapist from any and all
-            liability, past, present, and future relating to massage therapy and
-            bodywork.
+            <input type="checkbox" name="waiver" /> By signing this release, I
+            hereby waive and release my therapist from any and all liability,
+            past, present, and future relating to massage therapy and bodywork.
           </p>
           <p>
-            <input type="checkbox" name="waiver" required />
+            <input type="checkbox" name="waiver" />
             In the interest of accommodating and respecting all involved, 48hr
             notice is needed to <b>cancel</b> a scheduled appointment or
             <b>change</b> a scheduled appointment. If 48hr notice is not given,
@@ -1012,8 +1010,35 @@
         document
           .querySelector("form")
           .addEventListener("submit", async function (event) {
-            event.preventDefault();
-            await postClient();
+            const waiverCheckboxes = document.querySelectorAll(
+              'input[name="waiver"]'
+            );
+            let allChecked = true;
+
+            waiverCheckboxes.forEach((checkbox) => {
+              if (!checkbox.checked) {
+                checkbox.style.outline = "2px solid red"; // Directly apply red outline
+                allChecked = false;
+              } else {
+                checkbox.style.outline = ""; // Remove outline if checked
+              }
+            });
+
+            if (!allChecked) {
+              event.preventDefault(); // Prevent form submission
+              const firstUncheckedWaiver = document.querySelector(
+                'input[name="waiver"]:not(:checked)'
+              );
+              if (firstUncheckedWaiver) {
+                firstUncheckedWaiver.scrollIntoView({ behavior: "smooth" });
+                firstUncheckedWaiver.focus();
+                alert("please agree to all terms");
+              }
+              return;
+            }
+
+            event.preventDefault(); // Prevent default form submission
+            await postClient(); // Run your existing function
           });
       </script>
     </div>

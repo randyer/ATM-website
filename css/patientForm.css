@@ -98,3 +98,7 @@ textarea {
 .waiver p {
   margin: 10px 0;
 }
+
+.highlight-checkbox {
+  outline: 2px solid red;
+}
