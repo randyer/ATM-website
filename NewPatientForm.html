@@ -1106,6 +1106,12 @@
         document
           .querySelector("form")
           .addEventListener("submit", async function (event) {
+            event.preventDefault();
+            await postClient();
+            event.preventDefault();
+            const submitButton = event.target.querySelector(".submit-btn");
+            submitButton.disabled = true;
+
             const waiverCheckboxes = document.querySelectorAll(
               'input[name="waiver"]'
             );
@@ -1121,7 +1127,7 @@
             });
 
             if (!allChecked) {
-              event.preventDefault(); // Prevent form submission
+              submitButton.disabled = false;
               const firstUncheckedWaiver = document.querySelector(
                 'input[name="waiver"]:not(:checked)'
               );
@@ -1133,8 +1139,8 @@
               return;
             }
 
-            event.preventDefault(); // Prevent default form submission
-            await postClient(); // Run your existing function
+            await postClient();
+            submitButton.disabled = false;
           });
       </script>
     </div>
