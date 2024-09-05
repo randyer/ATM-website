@@ -6,9 +6,6 @@
     <title>New Patient Form</title>
     <link rel="stylesheet" href="css/patientForm.css" />
     <script src="js/patientForm.js"></script>
-
-
-    
   </head>
   <body>
     <div class="container">
@@ -891,6 +888,40 @@
           .addEventListener("submit", async function (event) {
             event.preventDefault();
             await postClient();
+            event.preventDefault();
+            const submitButton = event.target.querySelector(".submit-btn");
+            submitButton.disabled = true;
+
+            const waiverCheckboxes = document.querySelectorAll(
+              'input[name="waiver"]'
+            );
+            let allChecked = true;
+
+            waiverCheckboxes.forEach((checkbox) => {
+              if (!checkbox.checked) {
+                checkbox.style.outline = "2px solid red"; // Directly apply red outline
+                allChecked = false;
+              } else {
+                checkbox.style.outline = ""; // Remove outline if checked
+              }
+            });
+
+            if (!allChecked) {
+              submitButton.disabled = false;
+              const firstUncheckedWaiver = document.querySelector(
+                'input[name="waiver"]:not(:checked)'
+              );
+              if (firstUncheckedWaiver) {
+                firstUncheckedWaiver.scrollIntoView({ behavior: "smooth" });
+                firstUncheckedWaiver.focus();
+                alert("please agree to all terms");
+              }
+              return;
+            }
+
+            event.preventDefault();
+            await postClient();
+            submitButton.disabled = false;
           });
       </script>
     </div>
