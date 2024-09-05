@@ -5,7 +5,135 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>New Patient Form</title>
     <link rel="stylesheet" href="css/patientForm.css" />
-    <script src="js/patientForm.js"></script>
+
+    <script>
+      // Function to get checked values from checkbox groups with details
+      function getCheckedValuesWithDetails(
+        name,
+        past = false,
+        isInjury = false
+      ) {
+        return Array.from(
+          document.querySelectorAll(`input[name="${name}"]:checked`)
+        ).map((checkbox) => {
+          const symptom = checkbox.value;
+          if (isInjury) {
+            // For past injuries, retrieve notes from the textarea
+            const notes =
+              document.querySelector(`textarea[name="${symptom}_notes"]`)
+                ?.value || "";
+            return `${symptom} (${notes})`;
+          } else if (symptom === "other") {
+            // Handle "other" option for current or past symptoms
+            const notes = document.querySelector(
+              `textarea[name="${past ? "past" : "current"}_other_notes"]`
+            )?.value;
+            return `Other (${notes})`;
+          } else {
+            const prefix = past ? "past_" : "";
+            const frequency =
+              document.querySelector(
+                `select[name="${prefix}${symptom}_frequency"]`
+              )?.value || "N/A";
+            const location =
+              document.querySelector(
+                `input[name="${prefix}${symptom}_location"]`
+              )?.value || "N/A";
+            const intensity =
+              document.querySelector(
+                `select[name="${prefix}${symptom}_intensity"]`
+              )?.value || "N/A";
+            return `${symptom} (Frequency: ${frequency}, Location: ${location}, Intensity: ${intensity})`;
+          }
+        });
+      }
+
+      async function postClient() {
+        const currentSymptoms = getCheckedValuesWithDetails("current_symptoms")
+          .join(", ")
+          .replace(/\s*\n\s*/g, " ");
+        const pastSymptoms = getCheckedValuesWithDetails("past_symptoms", true)
+          .join(", ")
+          .replace(/\s*\n\s*/g, " ");
+        const pastInjuries = getCheckedValuesWithDetails(
+          "past_injuries",
+          true,
+          true
+        )
+          .join(", ")
+          .replace(/\s*\n\s*/g, " ");
+        const pastSurgeries = document
+          .getElementById("past_surgeries")
+          .value.trim();
+
+        const data = {
+          first_name: document.getElementById("first_name").value,
+          last_name: document.getElementById("last_name").value,
+          phone: document.getElementById("phone").value,
+          email: document.getElementById("email").value,
+          dob: document.getElementById("dob").value,
+          street: document.getElementById("street_address").value,
+          city: document.getElementById("city").value,
+          state: document.getElementById("state").value,
+          zip: document.getElementById("zip").value,
+          emergency_contact: document.getElementById("emergency_contact_name")
+            .value,
+          emergency_contact_phone: document.getElementById(
+            "emergency_contact_phone"
+          ).value,
+          heard_about_us: document.getElementById("referral").value,
+          current_symptoms: currentSymptoms,
+          past_symptoms: pastSymptoms,
+          past_injuries: pastInjuries,
+          past_surgeries: pastSurgeries,
+          form_data: `Current Symptoms: ${currentSymptoms}\n\nPast Symptoms: ${pastSymptoms}\n\nPast Injuries: ${pastInjuries}\n\nPast Surgeries: ${pastSurgeries}`,
+        };
+
+        console.log("data:", JSON.stringify(data, null, 2));
+        // Replace with your API Gateway URL
+        const apiUrl =
+          "https://rojwnqs7nuz5qzoydq6f3qk3te0ucghe.lambda-url.us-east-2.on.aws/";
+
+        try {
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            body: JSON.stringify(data),
+          });
+
+          const result = await response.json();
+          console.log("Success:", result);
+          alert("Form submitted!");
+          window.location.href = "index.html";
+        } catch (error) {
+          console.error("Error:", error);
+          alert(
+            "There was an error submitting your form. Please try again later or double check the fields in your submission."
+          );
+        }
+      }
+    </script>
+
+    <script>
+      function toggleOtherReferral() {
+        var referral = document.getElementById("referral");
+        var otherReferral = document.getElementById("otherReferral");
+
+        if (referral.value === "other") {
+          otherReferral.classList.remove("hidden");
+        } else {
+          otherReferral.classList.add("hidden");
+        }
+      }
+
+      function toggleSymptomDetails(checkbox, detailsId) {
+        var details = document.getElementById(detailsId);
+        if (checkbox.checked) {
+          details.classList.remove("hidden");
+        } else {
+          details.classList.add("hidden");
+        }
+      }
+    </script>
   </head>
   <body>
     <div class="container">
@@ -13,22 +141,34 @@
       <form action="/submit" method="post">
         <div class="form-field">
           <label for="first_name">First Name:</label>
-          <input type="text" id="first_name" name="first_name" required />
+          <input
+            type="text"
+            id="first_name"
+            name="first_name"
+            maxlength="100"
+            required
+          />
         </div>
 
         <div class="form-field">
           <label for="last_name">Last Name:</label>
-          <input type="text" id="last_name" name="last_name" required />
+          <input
+            type="text"
+            id="last_name"
+            name="last_name"
+            maxlength="100"
+            required
+          />
         </div>
 
         <div class="form-field">
           <label for="phone">Mobile Phone:</label>
-          <input type="tel" id="phone" name="phone" required />
+          <input type="tel" id="phone" name="phone" maxlength="20" required />
         </div>
 
         <div class="form-field">
           <label for="email">Email:</label>
-          <input type="email" id="email" name="email" />
+          <input type="email" id="email" name="email" maxlength="100" />
         </div>
 
         <div class="form-field">
@@ -42,23 +182,84 @@
             type="text"
             id="street_address"
             name="street_address"
+            maxlength="100"
             required
           />
         </div>
 
         <div class="form-field">
           <label for="city">City:</label>
-          <input type="text" id="city" name="city" required />
+          <input type="text" id="city" name="city" maxlength="100" required />
         </div>
 
         <div class="form-field">
           <label for="state">State:</label>
-          <input type="text" id="state" name="state" required />
+          <select id="state" name="state" required>
+            <option value="">Select a state</option>
+            <option value="AL">AL - Alabama</option>
+            <option value="AK">AK - Alaska</option>
+            <option value="AZ">AZ - Arizona</option>
+            <option value="AR">AR - Arkansas</option>
+            <option value="CA">CA - California</option>
+            <option value="CO">CO - Colorado</option>
+            <option value="CT">CT - Connecticut</option>
+            <option value="DE">DE - Delaware</option>
+            <option value="FL">FL - Florida</option>
+            <option value="GA">GA - Georgia</option>
+            <option value="HI">HI - Hawaii</option>
+            <option value="ID">ID - Idaho</option>
+            <option value="IL">IL - Illinois</option>
+            <option value="IN">IN - Indiana</option>
+            <option value="IA">IA - Iowa</option>
+            <option value="KS">KS - Kansas</option>
+            <option value="KY">KY - Kentucky</option>
+            <option value="LA">LA - Louisiana</option>
+            <option value="ME">ME - Maine</option>
+            <option value="MD">MD - Maryland</option>
+            <option value="MA">MA - Massachusetts</option>
+            <option value="MI">MI - Michigan</option>
+            <option value="MN">MN - Minnesota</option>
+            <option value="MS">MS - Mississippi</option>
+            <option value="MO">MO - Missouri</option>
+            <option value="MT">MT - Montana</option>
+            <option value="NE">NE - Nebraska</option>
+            <option value="NV">NV - Nevada</option>
+            <option value="NH">NH - New Hampshire</option>
+            <option value="NJ">NJ - New Jersey</option>
+            <option value="NM">NM - New Mexico</option>
+            <option value="NY">NY - New York</option>
+            <option value="NC">NC - North Carolina</option>
+            <option value="ND">ND - North Dakota</option>
+            <option value="OH">OH - Ohio</option>
+            <option value="OK">OK - Oklahoma</option>
+            <option value="OR">OR - Oregon</option>
+            <option value="PA">PA - Pennsylvania</option>
+            <option value="RI">RI - Rhode Island</option>
+            <option value="SC">SC - South Carolina</option>
+            <option value="SD">SD - South Dakota</option>
+            <option value="TN">TN - Tennessee</option>
+            <option value="TX">TX - Texas</option>
+            <option value="UT">UT - Utah</option>
+            <option value="VT">VT - Vermont</option>
+            <option value="VA">VA - Virginia</option>
+            <option value="WA">WA - Washington</option>
+            <option value="WV">WV - West Virginia</option>
+            <option value="WI">WI - Wisconsin</option>
+            <option value="WY">WY - Wyoming</option>
+          </select>
         </div>
 
         <div class="form-field">
           <label for="zip">Zip Code:</label>
-          <input type="text" id="zip" name="zip" required />
+          <input
+            type="text"
+            id="zip"
+            name="zip"
+            maxlength="10"
+            pattern="^\d{1,5}(-\d{1,4})?$"
+            required
+            oninput="this.value = this.value.replace(/[^0-9-]/g, '')"
+          />
         </div>
 
         <div class="form-field">
@@ -67,6 +268,7 @@
             type="text"
             id="emergency_contact_name"
             name="emergency_contact_name"
+            maxlength="100"
           />
         </div>
 
@@ -76,6 +278,7 @@
             type="tel"
             id="emergency_contact_phone"
             name="emergency_contact_phone"
+            maxlength="20"
           />
         </div>
 
@@ -84,6 +287,7 @@
           <select
             id="referral"
             name="referral"
+            maxlength="100"
             onchange="toggleOtherReferral()"
           >
             <option value="friend_family">Friend/Family Member</option>
@@ -129,14 +333,15 @@
                 name="headache_location"
                 placeholder="Enter location (Optional)"
               />
-              <label>Intensity (1 - least pain - 5 intense pain):</label>
-              <input
-                type="number"
-                name="headache_intensity"
-                min="1"
-                max="5"
-                placeholder="Enter intensity (Optional)"
-              />
+              <label>Intensity:</label>
+              <select name="headache_intensity">
+                <option value="" selected>Select intensity (Optional)</option>
+                <option value="Very Little">1 - Very Little</option>
+                <option value="Mild">2 - Mild</option>
+                <option value="Moderate">3 - Moderate</option>
+                <option value="Strong">4 - Strong</option>
+                <option value="Extreme">5 - Extreme</option>
+              </select>
             </div>
 
             <label>
@@ -162,14 +367,15 @@
                 name="back_pain_location"
                 placeholder="Enter location (Optional)"
               />
-              <label>Intensity (1 - least pain - 5 intense pain):</label>
-              <input
-                type="number"
-                name="back_pain_intensity"
-                min="1"
-                max="5"
-                placeholder="Enter intensity (Optional)"
-              />
+              <label>Intensity:</label>
+              <select name="back_pain_intensity">
+                <option value="" selected>Select intensity (Optional)</option>
+                <option value="Very Little">1 - Very Little</option>
+                <option value="Mild">2 - Mild</option>
+                <option value="Moderate">3 - Moderate</option>
+                <option value="Strong">4 - Strong</option>
+                <option value="Extreme">5 - Extreme</option>
+              </select>
             </div>
 
             <label>
@@ -195,14 +401,15 @@
                 name="neck_pain_location"
                 placeholder="Enter location (Optional)"
               />
-              <label>Intensity (1 - least pain - 5 intense pain):</label>
-              <input
-                type="number"
-                name="neck_pain_intensity"
-                min="1"
-                max="5"
-                placeholder="Enter intensity (Optional)"
-              />
+              <label>Intensity:</label>
+              <select name="neck_pain_intensity">
+                <option value="" selected>Select intensity (Optional)</option>
+                <option value="Very Little">1 - Very Little</option>
+                <option value="Mild">2 - Mild</option>
+                <option value="Moderate">3 - Moderate</option>
+                <option value="Strong">4 - Strong</option>
+                <option value="Extreme">5 - Extreme</option>
+              </select>
             </div>
 
             <label>
@@ -228,14 +435,15 @@
                 name="shoulder_pain_location"
                 placeholder="Enter location (Optional)"
               />
-              <label>Intensity (1 - least pain - 5 intense pain):</label>
-              <input
-                type="number"
-                name="shoulder_pain_intensity"
-                min="1"
-                max="5"
-                placeholder="Enter intensity (Optional)"
-              />
+              <label>Intensity:</label>
+              <select name="shoulder_pain_intensity">
+                <option value="" selected>Select intensity (Optional)</option>
+                <option value="Very Little">1 - Very Little</option>
+                <option value="Mild">2 - Mild</option>
+                <option value="Moderate">3 - Moderate</option>
+                <option value="Strong">4 - Strong</option>
+                <option value="Extreme">5 - Extreme</option>
+              </select>
             </div>
 
             <label>
@@ -261,14 +469,15 @@
                 name="jaw_pain_location"
                 placeholder="Enter location (Optional)"
               />
-              <label>Intensity (1 - least pain - 5 intense pain):</label>
-              <input
-                type="number"
-                name="jaw_pain_intensity"
-                min="1"
-                max="5"
-                placeholder="Enter intensity (Optional)"
-              />
+              <label>Intensity:</label>
+              <select name="jaw_pain_intensity">
+                <option value="" selected>Select intensity (Optional)</option>
+                <option value="Very Little">1 - Very Little</option>
+                <option value="Mild">2 - Mild</option>
+                <option value="Moderate">3 - Moderate</option>
+                <option value="Strong">4 - Strong</option>
+                <option value="Extreme">5 - Extreme</option>
+              </select>
             </div>
 
             <label>
@@ -294,14 +503,15 @@
                 name="muscle_stiffness_location"
                 placeholder="Enter location (Optional)"
               />
-              <label>Intensity (1 - least pain - 5 intense pain):</label>
-              <input
-                type="number"
-                name="muscle_stiffness_intensity"
-                min="1"
-                max="5"
-                placeholder="Enter intensity (Optional)"
-              />
+              <label>Intensity:</label>
+              <select name="muscle_stiffness_intensity">
+                <option value="" selected>Select intensity (Optional)</option>
+                <option value="Very Little">1 - Very Little</option>
+                <option value="Mild">2 - Mild</option>
+                <option value="Moderate">3 - Moderate</option>
+                <option value="Strong">4 - Strong</option>
+                <option value="Extreme">5 - Extreme</option>
+              </select>
             </div>
 
             <label>
@@ -327,14 +537,15 @@
                 name="joint_pain_location"
                 placeholder="Enter location (Optional)"
               />
-              <label>Intensity (1 - least pain - 5 intense pain):</label>
-              <input
-                type="number"
-                name="joint_pain_intensity"
-                min="1"
-                max="5"
-                placeholder="Enter intensity (Optional)"
-              />
+              <label>Intensity:</label>
+              <select name="joint_pain_intensity">
+                <option value="" selected>Select intensity (Optional)</option>
+                <option value="Very Little">1 - Very Little</option>
+                <option value="Mild">2 - Mild</option>
+                <option value="Moderate">3 - Moderate</option>
+                <option value="Strong">4 - Strong</option>
+                <option value="Extreme">5 - Extreme</option>
+              </select>
             </div>
 
             <label>
@@ -354,14 +565,15 @@
                 <option value="weekly">Weekly</option>
                 <option value="rarely">Rarely</option>
               </select>
-              <label>Intensity (1 - least pain - 5 intense pain):</label>
-              <input
-                type="number"
-                name="fatigue_intensity"
-                min="1"
-                max="5"
-                placeholder="Enter intensity (Optional)"
-              />
+              <label>Intensity:</label>
+              <select name="fatigue_intensity">
+                <option value="" selected>Select intensity (Optional)</option>
+                <option value="Very Little">1 - Very Little</option>
+                <option value="Mild">2 - Mild</option>
+                <option value="Moderate">3 - Moderate</option>
+                <option value="Strong">4 - Strong</option>
+                <option value="Extreme">5 - Extreme</option>
+              </select>
             </div>
 
             <label>
@@ -381,14 +593,15 @@
                 <option value="weekly">Weekly</option>
                 <option value="rarely">Rarely</option>
               </select>
-              <label>Intensity (1 - least pain - 5 intense pain):</label>
-              <input
-                type="number"
-                name="stress_intensity"
-                min="1"
-                max="5"
-                placeholder="Enter intensity (Optional)"
-              />
+              <label>Intensity:</label>
+              <select name="stress_intensity">
+                <option value="" selected>Select intensity (Optional)</option>
+                <option value="Very Little">1 - Very Little</option>
+                <option value="Mild">2 - Mild</option>
+                <option value="Moderate">3 - Moderate</option>
+                <option value="Strong">4 - Strong</option>
+                <option value="Extreme">5 - Extreme</option>
+              </select>
             </div>
 
             <label>
@@ -438,14 +651,15 @@
                 name="past_headache_location"
                 placeholder="Enter location (Optional)"
               />
-              <label>Intensity (1 - least pain - 5 intense pain):</label>
-              <input
-                type="number"
-                name="past_headache_intensity"
-                min="1"
-                max="5"
-                placeholder="Enter intensity (Optional)"
-              />
+              <label>Intensity:</label>
+              <select name="past_headache_intensity">
+                <option value="" selected>Select intensity (Optional)</option>
+                <option value="Very Little">1 - Very Little</option>
+                <option value="Mild">2 - Mild</option>
+                <option value="Moderate">3 - Moderate</option>
+                <option value="Strong">4 - Strong</option>
+                <option value="Extreme">5 - Extreme</option>
+              </select>
             </div>
 
             <label>
@@ -471,14 +685,15 @@
                 name="past_back_pain_location"
                 placeholder="Enter location (Optional)"
               />
-              <label>Intensity (1 - least pain - 5 intense pain):</label>
-              <input
-                type="number"
-                name="past_back_pain_intensity"
-                min="1"
-                max="5"
-                placeholder="Enter intensity (Optional)"
-              />
+              <label>Intensity:</label>
+              <select name="past_back_pain_intensity">
+                <option value="" selected>Select intensity (Optional)</option>
+                <option value="Very Little">1 - Very Little</option>
+                <option value="Mild">2 - Mild</option>
+                <option value="Moderate">3 - Moderate</option>
+                <option value="Strong">4 - Strong</option>
+                <option value="Extreme">5 - Extreme</option>
+              </select>
             </div>
 
             <label>
@@ -504,14 +719,15 @@
                 name="past_neck_pain_location"
                 placeholder="Enter location (Optional)"
               />
-              <label>Intensity (1 - least pain - 5 intense pain):</label>
-              <input
-                type="number"
-                name="past_neck_pain_intensity"
-                min="1"
-                max="5"
-                placeholder="Enter intensity (Optional)"
-              />
+              <label>Intensity:</label>
+              <select name="past_neck_pain_intensity">
+                <option value="" selected>Select intensity (Optional)</option>
+                <option value="Very Little">1 - Very Little</option>
+                <option value="Mild">2 - Mild</option>
+                <option value="Moderate">3 - Moderate</option>
+                <option value="Strong">4 - Strong</option>
+                <option value="Extreme">5 - Extreme</option>
+              </select>
             </div>
 
             <label>
@@ -537,14 +753,15 @@
                 name="past_shoulder_pain_location"
                 placeholder="Enter location (Optional)"
               />
-              <label>Intensity (1 - least pain - 5 intense pain):</label>
-              <input
-                type="number"
-                name="past_shoulder_pain_intensity"
-                min="1"
-                max="5"
-                placeholder="Enter intensity (Optional)"
-              />
+              <label>Intensity:</label>
+              <select name="past_shoulder_pain_intensity">
+                <option value="" selected>Select intensity (Optional)</option>
+                <option value="Very Little">1 - Very Little</option>
+                <option value="Mild">2 - Mild</option>
+                <option value="Moderate">3 - Moderate</option>
+                <option value="Strong">4 - Strong</option>
+                <option value="Extreme">5 - Extreme</option>
+              </select>
             </div>
 
             <label>
@@ -570,14 +787,15 @@
                 name="past_jaw_pain_location"
                 placeholder="Enter location (Optional)"
               />
-              <label>Intensity (1 - least pain - 5 intense pain):</label>
-              <input
-                type="number"
-                name="past_jaw_pain_intensity"
-                min="1"
-                max="5"
-                placeholder="Enter intensity (Optional)"
-              />
+              <label>Intensity:</label>
+              <select name="past_jaw_pain_intensity">
+                <option value="" selected>Select intensity (Optional)</option>
+                <option value="Very Little">1 - Very Little</option>
+                <option value="Mild">2 - Mild</option>
+                <option value="Moderate">3 - Moderate</option>
+                <option value="Strong">4 - Strong</option>
+                <option value="Extreme">5 - Extreme</option>
+              </select>
             </div>
 
             <label>
@@ -603,14 +821,15 @@
                 name="past_muscle_stiffness_location"
                 placeholder="Enter location (Optional)"
               />
-              <label>Intensity (1 - least pain - 5 intense pain):</label>
-              <input
-                type="number"
-                name="past_muscle_stiffness_intensity"
-                min="1"
-                max="5"
-                placeholder="Enter intensity (Optional)"
-              />
+              <label>Intensity:</label>
+              <select name="past_muscle_stiffness_intensity">
+                <option value="" selected>Select intensity (Optional)</option>
+                <option value="Very Little">1 - Very Little</option>
+                <option value="Mild">2 - Mild</option>
+                <option value="Moderate">3 - Moderate</option>
+                <option value="Strong">4 - Strong</option>
+                <option value="Extreme">5 - Extreme</option>
+              </select>
             </div>
 
             <label>
@@ -636,14 +855,15 @@
                 name="past_joint_pain_location"
                 placeholder="Enter location (Optional)"
               />
-              <label>Intensity (1 - least pain - 5 intense pain):</label>
-              <input
-                type="number"
-                name="past_joint_pain_intensity"
-                min="1"
-                max="5"
-                placeholder="Enter intensity (Optional)"
-              />
+              <label>Intensity:</label>
+              <select name="past_joint_pain_intensity">
+                <option value="" selected>Select intensity (Optional)</option>
+                <option value="Very Little">1 - Very Little</option>
+                <option value="Mild">2 - Mild</option>
+                <option value="Moderate">3 - Moderate</option>
+                <option value="Strong">4 - Strong</option>
+                <option value="Extreme">5 - Extreme</option>
+              </select>
             </div>
 
             <label>
@@ -663,14 +883,15 @@
                 <option value="weekly">Weekly</option>
                 <option value="rarely">Rarely</option>
               </select>
-              <label>Intensity (1 - least pain - 5 intense pain):</label>
-              <input
-                type="number"
-                name="past_fatigue_intensity"
-                min="1"
-                max="5"
-                placeholder="Enter intensity (Optional)"
-              />
+              <label>Intensity:</label>
+              <select name="past_fatigue_intensity">
+                <option value="" selected>Select intensity (Optional)</option>
+                <option value="Very Little">1 - Very Little</option>
+                <option value="Mild">2 - Mild</option>
+                <option value="Moderate">3 - Moderate</option>
+                <option value="Strong">4 - Strong</option>
+                <option value="Extreme">5 - Extreme</option>
+              </select>
             </div>
 
             <label>
@@ -690,14 +911,15 @@
                 <option value="weekly">Weekly</option>
                 <option value="rarely">Rarely</option>
               </select>
-              <label>Intensity (1 - least pain - 5 intense pain):</label>
-              <input
-                type="number"
-                name="past_stress_intensity"
-                min="1"
-                max="5"
-                placeholder="Enter intensity (Optional)"
-              />
+              <label>Intensity:</label>
+              <select name="past_stress_intensity">
+                <option value="" selected>Select intensity (Optional)</option>
+                <option value="Very Little">1 - Very Little</option>
+                <option value="Mild">2 - Mild</option>
+                <option value="Moderate">3 - Moderate</option>
+                <option value="Strong">4 - Strong</option>
+                <option value="Extreme">5 - Extreme</option>
+              </select>
             </div>
 
             <label>
@@ -821,42 +1043,40 @@
           <h2>Client Waiver Form</h2>
           <p>Please take a moment to agree to the following terms:</p>
           <p>
-            <input type="checkbox" name="waiver" required /> If I experience
-            pain or discomfort during the session, I will immediately inform my
+            <input type="checkbox" name="waiver" /> If I experience pain or
+            discomfort during the session, I will immediately inform my
             therapist so that pressure/strokes can be adjusted to my level of
             comfort. I will not hold my therapist responsible for any pain or
             discomfort I experience during or after the session.
           </p>
           <p>
-            <input type="checkbox" name="waiver" required /> I understand that
-            the services offered today are not a substitute for medical care. I
+            <input type="checkbox" name="waiver" /> I understand that the
+            services offered today are not a substitute for medical care. I
             understand that my therapist is not qualified to perform spinal or
             skeletal adjustments, diagnose, prescribe, or treat physical or
             mental illness.
           </p>
           <p>
-            <input type="checkbox" name="waiver" required /> I affirm that I
-            have notified my therapist of all known medical conditions and
-            injuries.
+            <input type="checkbox" name="waiver" /> I affirm that I have
+            notified my therapist of all known medical conditions and injuries.
           </p>
           <p>
-            <input type="checkbox" name="waiver" required /> I agree to inform
-            the therapist of any changes in my health and medical condition. I
+            <input type="checkbox" name="waiver" /> I agree to inform the
+            therapist of any changes in my health and medical condition. I
             understand that there shall be no liability on the therapist’s part
             should I forget to do so.
           </p>
           <p>
-            <input type="checkbox" name="waiver" required /> I understand that
-            massage is entirely therapeutic and non-sexual in nature.
+            <input type="checkbox" name="waiver" /> I understand that massage is
+            entirely therapeutic and non-sexual in nature.
           </p>
           <p>
-            <input type="checkbox" name="waiver" required /> By signing this
-            release, I hereby waive and release my therapist from any and all
-            liability, past, present, and future relating to massage therapy and
-            bodywork.
+            <input type="checkbox" name="waiver" /> By signing this release, I
+            hereby waive and release my therapist from any and all liability,
+            past, present, and future relating to massage therapy and bodywork.
           </p>
           <p>
-            <input type="checkbox" name="waiver" required />
+            <input type="checkbox" name="waiver" />
             In the interest of accommodating and respecting all involved, 48hr
             notice is needed to <b>cancel</b> a scheduled appointment or
             <b>change</b> a scheduled appointment. If 48hr notice is not given,
@@ -919,7 +1139,6 @@
               return;
             }
 
-            event.preventDefault();
             await postClient();
             submitButton.disabled = false;
           });
