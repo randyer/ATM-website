@@ -18,11 +18,19 @@
         ).map((checkbox) => {
           const symptom = checkbox.value;
           if (isInjury) {
-            // For past injuries, retrieve notes from the textarea
-            const notes =
-              document.querySelector(`textarea[name="${symptom}_notes"]`)
-                ?.value || "";
-            return `${symptom} (${notes})`;
+            if (symptom === "other") {
+              // Handle "other" option for injuries
+              const notes =
+                document.querySelector(`textarea[name="other_injuries_notes"]`)
+                  ?.value || "N/A"; // Default to "N/A" if notes are empty
+              return `Other (${notes})`;
+            } else {
+              // For regular past injuries, retrieve notes from the corresponding textarea
+              const notes =
+                document.querySelector(`textarea[name="${symptom}_notes"]`)
+                  ?.value || "N/A";
+              return `${symptom} (${notes})`;
+            }
           } else if (symptom === "other") {
             // Handle "other" option for current or past symptoms
             const notes = document.querySelector(
