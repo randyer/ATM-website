@@ -34,34 +34,40 @@
             const frequency =
               document.querySelector(
                 `select[name="${prefix}${symptom}_frequency"]`
-              )?.value || "N/A";
+              )?.value || "";
             const location =
               document.querySelector(
                 `input[name="${prefix}${symptom}_location"]`
-              )?.value || "N/A";
+              )?.value || "";
             const intensity =
               document.querySelector(
                 `select[name="${prefix}${symptom}_intensity"]`
-              )?.value || "N/A";
-            return `${symptom} (Frequency: ${frequency}, Location: ${location}, Intensity: ${intensity})`;
+              )?.value || "";
+            let details = [];
+
+            if (frequency) details.push(`Frequency: ${frequency}`);
+            if (location) details.push(`Location: ${location}`);
+            if (intensity) details.push(`Intensity: ${intensity}`);
+
+            return details.length > 0
+              ? `${symptom} (${details.join(", ")})`
+              : symptom;
           }
         });
       }
 
       async function postClient() {
-        const currentSymptoms = getCheckedValuesWithDetails("current_symptoms")
-          .join(", ")
-          .replace(/\s*\n\s*/g, " ");
-        const pastSymptoms = getCheckedValuesWithDetails("past_symptoms", true)
-          .join(", ")
-          .replace(/\s*\n\s*/g, " ");
+        const currentSymptoms =
+          getCheckedValuesWithDetails("current_symptoms").join(", \n");
+        const pastSymptoms = getCheckedValuesWithDetails(
+          "past_symptoms",
+          true
+        ).join(", \n");
         const pastInjuries = getCheckedValuesWithDetails(
           "past_injuries",
           true,
           true
-        )
-          .join(", ")
-          .replace(/\s*\n\s*/g, " ");
+        ).join(", \n");
         const pastSurgeries = document
           .getElementById("past_surgeries")
           .value.trim();
