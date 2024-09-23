@@ -471,7 +471,7 @@
   border-radius: 0.5rem;
   transition: all 0.5s;
   padding: 12px 22px 22px;
-  margin: 30px;
+  /* margin: 30px; */
 }
 
 .modal p,
