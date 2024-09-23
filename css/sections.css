@@ -351,7 +351,7 @@
   font-weight: 700;
   font-size: 17px;
   border-radius: 500px;
-  overflow: hidden;
+  /* overflow: hidden; */
   background: #9d71b3;
   /* background: #dddd91; */
   color: ghostwhite;
