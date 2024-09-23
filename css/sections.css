@@ -352,13 +352,14 @@
   font-size: 17px;
   border-radius: 500px;
   overflow: hidden;
-  background: #dddd91;
+  background: #9d71b3;
+  /* background: #dddd91; */
   color: ghostwhite;
   margin-top: 5px;
   z-index: 100;
 }
 
-.book span {
+/* .book span {
   position: relative;
   z-index: 10;
   transition: color 0.4s;
@@ -390,7 +391,7 @@
 
 .book:hover::before {
   transform: translate3d(100%, 0, 0);
-}
+} */
 
 .open-button {
   outline: none;
