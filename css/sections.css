@@ -342,7 +342,6 @@
   cursor: pointer;
   border: none;
   padding: 0.9rem 2rem;
-  margin: 0;
   font-family: inherit;
   font-size: inherit;
   position: relative;
@@ -355,7 +354,7 @@
   background: #9d71b3;
   /* background: #dddd91; */
   color: ghostwhite;
-  margin-top: 5px;
+  margin-top: 30px;
   z-index: 100;
 }
 
