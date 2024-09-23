@@ -355,6 +355,7 @@
   background: #dddd91;
   color: ghostwhite;
   margin-top: 5px;
+  z-index: 100;
 }
 
 .book span {
@@ -465,10 +466,12 @@
   color: aliceblue;
   border: none;
   max-width: 80vw;
-  max-height: 90vh;
+  height: 85%;
+  max-height: 85%;
   border-radius: 0.5rem;
   transition: all 0.5s;
   padding: 12px 22px 22px;
+  margin: 30px;
 }
 
 .modal p,
